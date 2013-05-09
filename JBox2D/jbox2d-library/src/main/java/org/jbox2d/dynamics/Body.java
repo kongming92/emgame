@@ -99,7 +99,7 @@ public class Body {
 	/**
 	 * Charge of body
 	 */
-	public float charge;
+	//public float charge;
 
 
 	public Body(final BodyDef bd, World world) {
@@ -174,7 +174,7 @@ public class Body {
 		m_fixtureList = null;
 		m_fixtureCount = 0;
 		//Holden
-		charge=0;
+		//charge=0;
 	}
 
 	/**
@@ -1189,10 +1189,11 @@ public class Body {
 		m_xf.p.mulLocal(-1).addLocal(m_sweep.c);
 	}
 
-	public Vec2 forceFrom(Body b2) {
+	public Vec2 forceOn(Body b2) {
+		/*
 		//find unit vector from b2 to b
 		//now scale by force
-		Vec2 v = b2.getPosition().sub(getPosition());
+		Vec2 v = getPosition().sub(b2.getPosition());
 		//now scale: q_1q_2v/|v|^3
 		if (v.equals(new Vec2(0,0))) {
 			return new Vec2(0,0);
@@ -1200,13 +1201,19 @@ public class Body {
 		v = v.mul((float) (-(E_CONSTANT * charge * b2.charge)/Math.pow(v.length(),3)));
 		//System.out.println("force: "+v);
 		return v;
+		*/
+		return new Vec2(0,0);
 	}
 
+	
 	public Vec2 sumForcesOn(Body blist) {
 		Vec2 force=new Vec2(0,0);
+		if (m_type==BodyType.STATIC){
+			return force;
+		}
 		while (blist!=null) {
 			if (blist!=this) {//this is not working for some reason, don't know why
-				force=force.add(forceFrom(blist));
+				force=force.add(blist.forceOn(this));
 			}
 			blist=blist.m_next;
 		}

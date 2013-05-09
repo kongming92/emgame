@@ -105,5 +105,7 @@ public class TestList {
     model.addCategory("Charges");
     model.addTest(new ChargeTest());
     model.addTest(new Level("levels/level1.txt"));    
+    model.addTest(new Level("levels/level2.txt"));
+    model.addTest(new Level("levels/level3.txt"));    
   }
 }
