@@ -129,20 +129,21 @@ public class Level extends TestbedTest {
     fd3.filter.maskBits=0x0000;//can collide with nothing
     
     //starting to make the shape
-//    PolygonShape poly=new PolygonShape();
-//    Vec2 [] pointA = { new Vec2( 1, 1), new Vec2( 3, 5),new Vec2(4,1),new Vec2(0,3),new Vec2(5,3)  };
-//    poly.set(pointA, 3);
-//    
-//    PolygonShape poly2=new PolygonShape();
-//    Vec2 [] pointB={new Vec2(0,0), new Vec2(3,3), new Vec2(0,4)};
-//    poly2.set(pointB, 3);
+    PolygonShape poly=new PolygonShape();
+    Vec2 [] pointA = { new Vec2( 0, 3), new Vec2( 4, 3),new Vec2(2,0)  };
+    poly.set(pointA, 3);
+    
+    PolygonShape poly2=new PolygonShape();
+    Vec2 [] pointB={new Vec2(0,1), new Vec2(2,4), new Vec2(4,1)};
+    poly2.set(pointB, 3);
     
   
-    fd2.shape=c;
+    fd2.shape=poly;
+    fd3.shape=poly2;
   //now create a Body in the world, and put the bodydef and the fixturedef into it
     Star body2 = getWorld().createStar(bd2);
     body2.createFixture(fd2);
-    //body2.createFixture(fd3);
+    body2.createFixture(fd3);
     return body2;
   }
 	
