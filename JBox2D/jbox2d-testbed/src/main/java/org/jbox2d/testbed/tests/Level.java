@@ -16,6 +16,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Charge;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.MagneticField;
+import org.jbox2d.dynamics.Star;
 import org.jbox2d.testbed.framework.TestbedTest;
 
 public class Level extends TestbedTest {
@@ -110,7 +111,41 @@ public class Level extends TestbedTest {
 		body2.setbField(strength);
 		return body2;
 	}
+	private Star createStar(Vec2 position) {
+	  BodyDef bd2 = new BodyDef();
+    bd2.position = position;
+    bd2.type = BodyType.STATIC;
+	  
+    CircleShape c=new CircleShape();
 
+    c.setRadius(3);
+    
+    FixtureDef fd2 = new FixtureDef();
+    fd2.filter.categoryBits=0x0010;
+    fd2.filter.maskBits=0x0000;//can collide with nothing
+    
+    FixtureDef fd3 = new FixtureDef();
+    fd3.filter.categoryBits=0x0010;
+    fd3.filter.maskBits=0x0000;//can collide with nothing
+    
+    //starting to make the shape
+//    PolygonShape poly=new PolygonShape();
+//    Vec2 [] pointA = { new Vec2( 1, 1), new Vec2( 3, 5),new Vec2(4,1),new Vec2(0,3),new Vec2(5,3)  };
+//    poly.set(pointA, 3);
+//    
+//    PolygonShape poly2=new PolygonShape();
+//    Vec2 [] pointB={new Vec2(0,0), new Vec2(3,3), new Vec2(0,4)};
+//    poly2.set(pointB, 3);
+    
+  
+    fd2.shape=c;
+  //now create a Body in the world, and put the bodydef and the fixturedef into it
+    Star body2 = getWorld().createStar(bd2);
+    body2.createFixture(fd2);
+    //body2.createFixture(fd3);
+    return body2;
+  }
+	
 	private void initFromFile(String s) {
 		Scanner scanner = null;
 		try {
@@ -164,8 +199,8 @@ public class Level extends TestbedTest {
 					case 'x':
 						createMagneticField(position, xRes/2, yRes/2,10);
 					case '*':
-						// TODO Draw a star! 
-						//break;
+						createStar(position);
+						break;
 					case ' ':
 						//Do nothing
 					}

@@ -1118,6 +1118,7 @@ public class Body {
 
 	// djm pooling
 	private final Transform pxf = new Transform();
+  public int charge;
 
 	protected final void synchronizeFixtures() {
 		final Transform xf1 = pxf;
