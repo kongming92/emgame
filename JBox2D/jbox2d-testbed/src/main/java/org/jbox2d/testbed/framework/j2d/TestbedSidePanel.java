@@ -74,7 +74,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 
   public JComboBox tests;
 
-  private JButton pauseButton = new JButton("Pause");
+  private static JButton pauseButton = new JButton("Pause");
   private JButton resetButton = new JButton("Reset");
   private JButton quitButton = new JButton("Quit");
   private static JButton nextLevel = new JButton("Next Level");
@@ -252,6 +252,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         ContactManager.win=false;
         controller.resetTest();
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
+        pauseButton.setEnabled(true);
       }
     });
 
@@ -269,6 +270,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         model.getSettings().pause=false;
         ContactManager.win=false;
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
+        pauseButton.setEnabled(true);
       }
     });
     
@@ -347,5 +349,8 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   }
   public static void disableNextLevel(){
     nextLevel.setEnabled(false);
+  }
+  public static void disablePauseButton(){
+    pauseButton.setEnabled(false);
   }
 }

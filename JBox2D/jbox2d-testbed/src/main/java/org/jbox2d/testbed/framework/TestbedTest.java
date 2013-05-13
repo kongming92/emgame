@@ -662,6 +662,7 @@ public abstract class TestbedTest
       debugDraw.drawString(20, 200, "You Win!!!!!",color6);
       settings.pause=true;
       TestbedSidePanel.enableNextLevel();
+      TestbedSidePanel.disablePauseButton();
       
     }
     
