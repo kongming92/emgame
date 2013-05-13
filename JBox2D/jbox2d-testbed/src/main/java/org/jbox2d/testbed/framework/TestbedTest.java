@@ -54,6 +54,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Charge;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.Profile;
@@ -948,33 +949,40 @@ public abstract class TestbedTest
 	      charge = null;
 	    }
 	    // todo optimize this
-	    BodyDef bd = new BodyDef();
-	    bd.type = BodyType.STATIC;
-	    bd.position.set(position);
-	    bd.bullet = true;
-	    charge = m_world.createBody(bd);
-	    charge.setLinearVelocity(velocity);
-	    charge.charge = 10;
-
-	    CircleShape circle = new CircleShape();
-	    circle.m_radius = 1.3f;
-
-	    FixtureDef fd = new FixtureDef();
-	    fd.shape = circle;
-	    fd.density = 20f;
-	    fd.restitution = 0;
-
-	    Vec2 minV = new Vec2(position);
-	    Vec2 maxV = new Vec2(position);
-
-	    minV.subLocal(new Vec2(.3f, .3f));
-	    maxV.addLocal(new Vec2(.3f, .3f));
-
-	    aabb.lowerBound.set(minV);
-	    aabb.upperBound.set(maxV);
-
-	    charge.createFixture(fd);
+	    createCharge(position, BodyType.STATIC, 1);
+	    // positive
 	  }
+  
+	private Charge createCharge(Vec2 position, BodyType type, float charge) {
+		float r=1;
+		//Make a circle
+		CircleShape c2 = new CircleShape();
+		c2.setRadius(r);
+		//Make a fixture
+		FixtureDef fd2 = new FixtureDef();   
+		//Put the circle in the fixture and set density
+		fd2.shape=c2;
+		fd2.density = 10;
+		//Make the BodyDef, set its position, and set it as dynamic
+		BodyDef bd2 = new BodyDef();
+		bd2.position = position;
+		bd2.type = type;
+		if (type==BodyType.DYNAMIC) {
+			//then it's the player's charge
+			fd2.filter.categoryBits=0x0001;
+			fd2.filter.maskBits=0x0007;//can collide with walls (4), charges (2), self (1) 
+		} else {
+			//it's static
+			fd2.filter.categoryBits=0x0002;
+			fd2.filter.maskBits=0x0001;//can only collide with player (1)
+		}
+		//now create a Body in the world, and put the bodydef and the fixturedef into it
+		Charge body2 = getWorld().createCharge(bd2);
+		body2.createFixture(fd2);
+		//set the charge to be negative
+		body2.charge=charge;
+		return body2;
+	}
 
 	  public synchronized void spawnCharge(Vec2 worldPt) { // ryan
 	    chargeSpawnPoint.set(worldPt);
