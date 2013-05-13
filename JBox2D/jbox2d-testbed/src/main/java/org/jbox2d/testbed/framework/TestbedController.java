@@ -127,11 +127,16 @@ public class TestbedController implements Runnable {
     	  panel.grabFocus();
           if (model.getCurrTest() != null) {
             Vec2 pos = new Vec2(e.getX(), e.getY());
-            if (e.getButton() == MouseEvent.BUTTON1 && model.getCodedKeys()[KeyEvent.VK_Q]) {
-                model.getDebugDraw().getScreenToWorldToOut(pos, pos);
-            	model.getCurrTest().queueQMouse(pos); // Q
+            if (e.getButton() == MouseEvent.BUTTON1) {
+            	if (model.getCodedKeys()[KeyEvent.VK_Q]) {
+            		model.getDebugDraw().getScreenToWorldToOut(pos, pos);
+                 	model.getCurrTest().queueQMouse(pos); // Q
+            	} else if (model.getCodedKeys()[KeyEvent.VK_W]){
+            		model.getDebugDraw().getScreenToWorldToOut(pos, pos);
+                	model.getCurrTest().queueWMouse(pos); // Q
+            	}
+               
             }
-            
           }    	  
       }
     });

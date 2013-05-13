@@ -35,7 +35,6 @@ public class TestList {
 
   public static void populateModel(TestbedModel model) {
 
-    
     model.addCategory("Charges");
     model.addTest(new Level("levels/level1.txt"));    
     model.addTest(new Level("levels/level2.txt"));
