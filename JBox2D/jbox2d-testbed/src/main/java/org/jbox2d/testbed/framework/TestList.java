@@ -107,5 +107,6 @@ public class TestList {
     model.addTest(new Level("levels/level1.txt"));    
     model.addTest(new Level("levels/level2.txt"));
     model.addTest(new Level("levels/level3.txt"));    
+    model.addTest(new DragDrop());
   }
 }

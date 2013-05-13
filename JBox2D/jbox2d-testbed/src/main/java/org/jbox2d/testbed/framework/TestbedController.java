@@ -144,6 +144,9 @@ public class TestbedController implements Runnable {
             if (model.getCodedKeys()[KeyEvent.VK_SHIFT]) {
               model.getCurrTest().queueShiftMouseDown(pos);
             }
+            if (model.getCodedKeys()[KeyEvent.VK_Q]) {
+                model.getCurrTest().queueQMouseDown(pos);
+              }
           }
         }
       }

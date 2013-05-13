@@ -109,6 +109,10 @@ public abstract class TestbedTest
   private Body bomb;
   private final Vec2 bombSpawnPoint = new Vec2();
   private boolean bombSpawning = false;
+  
+  private Body charge;// ryan
+  private final Vec2 chargeSpawnPoint = new Vec2(); // ryan
+  private boolean chargeSpawning = false; // ryan
 
   private final Vec2 mouseWorld = new Vec2();
   private int pointCount;
@@ -217,6 +221,7 @@ public abstract class TestbedTest
     pointCount = 0;
     stepCount = 0;
     bombSpawning = false;
+    chargeSpawning = false; // ryan
 
     argWorld.setDestructionListener(destructionListener);
     argWorld.setContactListener(this);
@@ -306,6 +311,12 @@ public abstract class TestbedTest
    */
   public Body getBomb() {
     return bomb;
+  }
+  
+  public void getCharge() {
+	  // return charge;
+	  // ryan
+	  return;
   }
 
   public float getCachedCameraScale() {
@@ -544,6 +555,9 @@ public abstract class TestbedTest
             case ShiftMouseDown:
               shiftMouseDown(i.p);
               break;
+            case QMouseDown: // ryan
+                QMouseDown(i.p);
+                break;
           }
         }
       }
@@ -716,6 +730,12 @@ public abstract class TestbedTest
       inputQueue.addLast(new QueueItem(QueueItemType.ShiftMouseDown, p));
     }
   }
+  
+  public void queueQMouseDown(Vec2 p) { // ryan
+	    synchronized (inputQueue) {
+	      inputQueue.addLast(new QueueItem(QueueItemType.QMouseDown, p));
+	    }
+	  }
 
   public void queueMouseUp(Vec2 p) {
     synchronized (inputQueue) {
@@ -761,6 +781,18 @@ public abstract class TestbedTest
 
     spawnBomb(p);
   }
+  
+  
+  public void QMouseDown(Vec2 p) { //ryan
+	    mouseWorld.set(p);
+
+	    if (mouseJoint != null) {
+	      return;
+	    }
+
+	    spawnCharge(p);
+	  }
+  
 
   /**
    * Called for mouse-up
@@ -775,6 +807,10 @@ public abstract class TestbedTest
 
     if (bombSpawning) {
       completeBombSpawn(p);
+    }
+    
+    if (chargeSpawning) { // ryan
+    	completeChargeSpawn(p);
     }
   }
 
@@ -862,7 +898,6 @@ public abstract class TestbedTest
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
     bd.position.set(position);
-    bd.bullet = true;
     bomb = m_world.createBody(bd);
     bomb.setLinearVelocity(velocity);
 
@@ -904,6 +939,64 @@ public abstract class TestbedTest
     launchBomb(bombSpawnPoint, vel);
     bombSpawning = false;
   }
+  
+  
+  
+  public synchronized void makeCharge(Vec2 position, Vec2 velocity) { // ryan
+	    if (charge != null) {
+	      m_world.destroyBody(charge);
+	      charge = null;
+	    }
+	    // todo optimize this
+	    BodyDef bd = new BodyDef();
+	    bd.type = BodyType.STATIC;
+	    bd.position.set(position);
+	    bd.bullet = true;
+	    charge = m_world.createBody(bd);
+	    charge.setLinearVelocity(velocity);
+	    charge.charge = 10;
+
+	    CircleShape circle = new CircleShape();
+	    circle.m_radius = 1.3f;
+
+	    FixtureDef fd = new FixtureDef();
+	    fd.shape = circle;
+	    fd.density = 20f;
+	    fd.restitution = 0;
+
+	    Vec2 minV = new Vec2(position);
+	    Vec2 maxV = new Vec2(position);
+
+	    minV.subLocal(new Vec2(.3f, .3f));
+	    maxV.addLocal(new Vec2(.3f, .3f));
+
+	    aabb.lowerBound.set(minV);
+	    aabb.upperBound.set(maxV);
+
+	    charge.createFixture(fd);
+	  }
+
+	  public synchronized void spawnCharge(Vec2 worldPt) { // ryan
+	    chargeSpawnPoint.set(worldPt);
+	    chargeSpawning = true;
+	  }
+
+	  private final Vec2 vel2 = new Vec2();
+
+	  public synchronized void completeChargeSpawn(Vec2 p) { // ryan
+	    if (chargeSpawning == false) {
+	      return;
+	    }
+
+	    float multiplier = 30f;
+	    vel2.set(bombSpawnPoint).subLocal(p);
+	    vel2.mulLocal(multiplier);
+	    makeCharge(chargeSpawnPoint, vel);
+	    chargeSpawning = false;
+	  }
+	  
+	  
+	  
 
   /**
    * Override to enable saving and loading. Remember to also override the {@link ObjectListener} and
@@ -1032,7 +1125,7 @@ class TestQueryCallback implements QueryCallback {
 
 
 enum QueueItemType {
-  MouseDown, MouseMove, MouseUp, ShiftMouseDown, KeyPressed, KeyReleased
+  MouseDown, MouseMove, MouseUp, ShiftMouseDown, QMouseDown, KeyPressed, KeyReleased
 }
 
 
