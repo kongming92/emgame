@@ -264,8 +264,11 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     nextLevel.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        //TODO: Add some code to switch the level
-        
+        controller.playTest(tests.getSelectedIndex()+1);
+        nextLevel.setEnabled(false);
+        model.getSettings().pause=false;
+        ContactManager.win=false;
+        model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
       }
     });
     
