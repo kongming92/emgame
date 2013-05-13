@@ -8,12 +8,13 @@
 .svn*
 */.svn/*
 *.properties
-*/classes/*
-*/target/*
+classes/*
+target/*
 log/
 target/
 *.project
 *.settings/
+META-INF/
 JBox2D/jbox2d-serialization/
 JBox2D/jbox2d-testbed/src/main/java/org/jbox2d/testbed/framework/CopyOfTestbedTest.java
 JBox2D/.classpath

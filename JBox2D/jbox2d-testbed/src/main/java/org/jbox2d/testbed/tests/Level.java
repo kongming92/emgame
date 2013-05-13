@@ -8,6 +8,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -143,11 +144,11 @@ public class Level extends TestbedTest {
     
     //starting to make the shape
     PolygonShape poly=new PolygonShape();
-    Vec2 [] pointA = { new Vec2( 0, 3), new Vec2( 4, 3),new Vec2(2,0)  };
+    Vec2 [] pointA = { new Vec2( 2f, 1.15f), new Vec2( -2, 1.15f),new Vec2(0,-2.3f)  };
     poly.set(pointA, 3);
     
     PolygonShape poly2=new PolygonShape();
-    Vec2 [] pointB={new Vec2(0,1), new Vec2(2,4), new Vec2(4,1)};
+    Vec2 [] pointB={ new Vec2( 2f, -1.15f), new Vec2( -2, -1.15f),new Vec2(0,2.3f)  };
     poly2.set(pointB, 3);
    
   
@@ -163,6 +164,26 @@ public class Level extends TestbedTest {
     return body2;
   }
 	
+	private void createVertEdge(Vec2 position){
+	  BodyDef bd = new BodyDef();
+    Body ground = getWorld().createBody(bd);
+
+    EdgeShape shape = new EdgeShape();
+    float x=position.x;
+    float y=position.y;
+    shape.set(new Vec2(x, y-5), new Vec2(x, y+5));
+    ground.createFixture(shape, 0.0f);
+	}
+	private void createHorizEdge(Vec2 position){
+	  BodyDef bd = new BodyDef();
+    Body ground = getWorld().createBody(bd);
+
+    EdgeShape shape = new EdgeShape();
+    float x=position.x;
+    float y=position.y;
+    shape.set(new Vec2(x-5, y), new Vec2(x+5, y));
+    ground.createFixture(shape, 0.0f);
+	}
 	private void initFromFile(String s) {
 		Scanner scanner = null;
 		try {
@@ -221,6 +242,14 @@ public class Level extends TestbedTest {
 						break;
 					case '*':
             createStar(position);
+            break;
+					case 'l':
+					  //this is a vertical edge
+            createVertEdge(position);
+            break;
+					case '_':
+					  //this is a horizontal edge
+            createHorizEdge(position);
             break;
 					case 'x':
 						createMagneticField(position, xRes/2, yRes/2,10);

@@ -223,6 +223,8 @@ public class Body {
 		//Holden
 		if (this instanceof Charge) {
 			fixture.type=(int) Math.signum(((Charge)this).charge);
+		} else if (this instanceof Star) {
+			fixture.type=2;
 		}
 		
 		return fixture;
