@@ -48,6 +48,7 @@ import org.jbox2d.dynamics.contacts.ContactEdge;
 public class Fixture {
 
 	//-1 if negative, +1 if positive, 0 none, +2 star
+
 	public int type;
 
 	public float m_density;
