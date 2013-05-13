@@ -149,10 +149,10 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
       }
     });
 
-    top.add(new JLabel("Choose a test:"));
+    top.add(new JLabel("Choose a level:"));
     top.add(tests);
 
-    addSettings(top, settings, SettingType.DRAWING);
+    //addSettings(top, settings, SettingType.DRAWING);
 
     add(top, "North");
 
@@ -161,7 +161,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     middle.setBorder(BorderFactory.createCompoundBorder(new EtchedBorder(EtchedBorder.LOWERED),
         BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 
-    addSettings(middle, settings, SettingType.ENGINE);
+    //addSettings(middle, settings, SettingType.ENGINE);
 
     add(middle, "Center");
 
