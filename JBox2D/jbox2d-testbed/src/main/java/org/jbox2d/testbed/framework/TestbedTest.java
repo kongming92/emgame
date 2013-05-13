@@ -985,11 +985,26 @@ public abstract class TestbedTest
 	}
 
 	  public synchronized void spawnCharge(Vec2 worldPt) { // ryan
+		worldPt = snapWorldPtToGrid(worldPt);
 	    chargeSpawnPoint.set(worldPt);
 	    chargeSpawning = true;
 	  }
 
-	  private final Vec2 vel2 = new Vec2();
+	  /**
+	   * Snaps the world point to the nearest grid point
+	   * @param worldPt
+	   * @return
+	   */
+	  private Vec2 snapWorldPtToGrid(Vec2 worldPt) {
+		  int xRes = 5; // width of a grid rect
+		  int yRes = 5; // height of a grid rect
+		  Vec2 newPt = new Vec2(worldPt);
+		  newPt.x = xRes * Math.round(worldPt.x / (float)xRes);
+		  newPt.y = yRes * Math.round(worldPt.y / (float)yRes);
+		  return newPt;
+	  }
+
+	private final Vec2 vel2 = new Vec2();
 
 	  public synchronized void completeChargeSpawn(Vec2 p) { // ryan
 	    if (chargeSpawning == false) {

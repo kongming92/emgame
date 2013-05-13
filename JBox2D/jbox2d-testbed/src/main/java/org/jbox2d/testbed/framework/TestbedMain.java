@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * THIS IS THE CORRECT TESTBED TO RUN!!
  * The entry point for the testbed application
  * 
  * @author Daniel Murphy
