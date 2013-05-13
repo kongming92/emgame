@@ -96,6 +96,10 @@ public class Body {
 
 	public Object m_userData;
 
+  public boolean isPlayer=false;
+  
+  public boolean isStar=false;
+	
 	/**
 	 * Charge of body
 	 */
@@ -1118,6 +1122,7 @@ public class Body {
 
 	// djm pooling
 	private final Transform pxf = new Transform();
+  public int charge;
 
 	protected final void synchronizeFixtures() {
 		final Transform xf1 = pxf;

@@ -64,6 +64,8 @@ public class Fixture {
 
   public boolean m_isSensor;
 
+
+  
   public Object m_userData;
 
   public Fixture() {

@@ -64,6 +64,7 @@ import org.jbox2d.pooling.IWorldPool;
 import org.jbox2d.pooling.arrays.Vec2Array;
 import org.jbox2d.pooling.normal.DefaultWorldPool;
 
+
 /**
  * The world class manages all physics entities, dynamic simulation, and asynchronous queries. The
  * world also contains efficient memory management facilities.
@@ -360,6 +361,16 @@ public class World {
 
 		return (MagneticField) initBody(b);
 	}
+	 public Star createStar(BodyDef def) {
+	    assert (isLocked() == false);
+	    if (isLocked()) {
+	      return null;
+	    }
+	    // TODO djm pooling
+	    Body b = new Star(def, this);
+
+	    return (Star) initBody(b);
+	  }
 
 	/**
 	 * destroy a rigid body given a definition. No reference to the definition is retained. This
@@ -1607,6 +1618,7 @@ public class World {
 		}
 	}
 
+ 
 }
 
 

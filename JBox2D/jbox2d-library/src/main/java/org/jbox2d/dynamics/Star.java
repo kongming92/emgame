@@ -1,10 +1,26 @@
 package org.jbox2d.dynamics;
 
-public class Star extends Body {
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.Charge;
+import org.jbox2d.dynamics.World;
 
-	public Star(BodyDef bd, World world) {
-		super(bd, world);
-		// TODO Auto-generated constructor stub
-	}
 
+
+public class Star extends Body{
+   
+  public Star(BodyDef bd, World world) {
+    super(bd, world);
+    
+  }
+  public boolean hit(Charge c){
+    if (this.getPosition()==c.getPosition()){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  
 }
+

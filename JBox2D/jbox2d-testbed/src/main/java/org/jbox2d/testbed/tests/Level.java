@@ -16,7 +16,10 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Charge;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.MagneticField;
+import org.jbox2d.dynamics.Star;
 import org.jbox2d.testbed.framework.TestbedTest;
+import org.jbox2d.common.Color3f;
+
 
 public class Level extends TestbedTest {
 
@@ -46,7 +49,12 @@ public class Level extends TestbedTest {
 		}
 
 		getWorld().setGravity(new Vec2(0,0));
-
+		//making a ContactListener to watch for user hitting the star
+//		ContactListener c=new ContactListener(m_contactManager.m_contactListener);
+//		
+//		getWorld().setContactListener(listener);
+//		
+		
 		initFromFile(levelFile);
 	}
 
@@ -63,10 +71,13 @@ public class Level extends TestbedTest {
 		BodyDef bd2 = new BodyDef();
 		bd2.position = position;
 		bd2.type = type;
+		boolean isPlayer=false;
 		if (type==BodyType.DYNAMIC) {
 			//then it's the player's charge
 			fd2.filter.categoryBits=0x0001;
-			fd2.filter.maskBits=0x0007;//can collide with walls (4), charges (2), self (1) 
+			fd2.filter.maskBits=0x0007;//can collide with walls (4), charges (2), self (1)
+			isPlayer=true;
+			
 		} else {
 			//it's static
 			fd2.filter.categoryBits=0x0002;
@@ -77,6 +88,7 @@ public class Level extends TestbedTest {
 		body2.createFixture(fd2);
 		//set the charge to be negative
 		body2.charge=charge;
+		body2.isPlayer=isPlayer;
 		return body2;
 	}
 
@@ -110,7 +122,42 @@ public class Level extends TestbedTest {
 		body2.setbField(strength);
 		return body2;
 	}
-
+	private Star createStar(Vec2 position) {
+	  BodyDef bd2 = new BodyDef();
+    bd2.position = position;
+    bd2.type = BodyType.STATIC;
+	  
+    
+    FixtureDef fd2 = new FixtureDef();
+    fd2.filter.categoryBits=0x0002;
+    fd2.filter.maskBits=0x0001;//can collide with player 1
+    
+    FixtureDef fd3 = new FixtureDef();
+    fd3.filter.categoryBits=0x0002;
+    fd3.filter.maskBits=0x0001;//can collide with player 1
+    
+    //starting to make the shape
+    PolygonShape poly=new PolygonShape();
+    Vec2 [] pointA = { new Vec2( 0, 3), new Vec2( 4, 3),new Vec2(2,0)  };
+    poly.set(pointA, 3);
+    
+    PolygonShape poly2=new PolygonShape();
+    Vec2 [] pointB={new Vec2(0,1), new Vec2(2,4), new Vec2(4,1)};
+    poly2.set(pointB, 3);
+   
+  
+    fd2.shape=poly;
+    fd3.shape=poly2;
+    
+    
+  //now create a Body in the world, and put the bodydef and the fixturedef into it
+    Star body2 = getWorld().createStar(bd2);
+    body2.createFixture(fd2);
+    body2.createFixture(fd3);
+    body2.isStar=true;
+    return body2;
+  }
+	
 	private void initFromFile(String s) {
 		Scanner scanner = null;
 		try {
@@ -161,11 +208,11 @@ public class Level extends TestbedTest {
 						createCharge(position, BodyType.DYNAMIC, 1, new Vec2(v_x,v_y));
 						//putNew=true;
 						break;
+					case '*':
+            createStar(position);
+            break;
 					case 'x':
 						createMagneticField(position, xRes/2, yRes/2,10);
-					case '*':
-						// TODO Draw a star! 
-						//break;
 					case ' ':
 						//Do nothing
 					}
@@ -185,4 +232,5 @@ public class Level extends TestbedTest {
 	public String getTestName() {
 		return "Level "+levelFile;
 	}
+	
 }
