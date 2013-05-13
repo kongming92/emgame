@@ -132,6 +132,9 @@ public abstract class TestbedTest
   private boolean dialogOnSaveLoadErrors = true;
 
   private boolean savePending, loadPending, resetPending = false;
+  
+  public static final float POSITIVE_CHARGE = 5.0f;
+  public static final float NEGATIVE_CHARGE = -5.0f;
 
   public TestbedTest() {
     inputQueue = new LinkedList<QueueItem>();
@@ -505,6 +508,9 @@ public abstract class TestbedTest
             case QMouse: // ryan
                 qMouse(i.p);
                 break;
+            case WMouse:
+            	wMouse(i.p);
+            	break;
           }
         }
       }
@@ -672,17 +678,29 @@ public abstract class TestbedTest
 	    synchronized (inputQueue) {
 	      inputQueue.addLast(new QueueItem(QueueItemType.QMouse, p));
 	    }
+  }
+  
+  public void queueWMouse(Vec2 p) {
+	  synchronized (inputQueue) {
+		  inputQueue.addLast(new QueueItem(QueueItemType.WMouse, p));
 	  }
+  }
 
   public void qMouse(Vec2 p) { //ryan
 	    mouseWorld.set(p);
 	    synchronized(this) {
 	    	chargeSpawnPoint.set(snapWorldPtToGrid(p));
-	    	makeCharge(chargeSpawnPoint, vel);
+	    	makeCharge(chargeSpawnPoint, vel, POSITIVE_CHARGE);
 	    }
   }
   
-
+  public void wMouse(Vec2 p) {
+	  mouseWorld.set(p);
+	  synchronized(this) {
+		  chargeSpawnPoint.set(snapWorldPtToGrid(p));
+		  makeCharge(chargeSpawnPoint, vel, NEGATIVE_CHARGE);
+	  }
+  }
   /**
    * Sets the title of the test
    * 
@@ -702,15 +720,13 @@ public abstract class TestbedTest
   }
 
   private final Vec2 vel = new Vec2();
-
     
-  public synchronized void makeCharge(Vec2 position, Vec2 velocity) { // ryan
+  public synchronized void makeCharge(Vec2 position, Vec2 velocity, float c) { // ryan
 	    if (charge != null) {
 	      m_world.destroyBody(charge);
 	      charge = null;
 	    }
-	    createCharge(position, BodyType.STATIC, 1);
-	    // positive
+	    createCharge(position, BodyType.STATIC, c);
 	  }
   
 	private Charge createCharge(Vec2 position, BodyType type, float charge) {
@@ -744,11 +760,6 @@ public abstract class TestbedTest
 		return body2;
 	}
 
-	  public synchronized void spawnCharge(Vec2 worldPt) { // ryan
-		worldPt = snapWorldPtToGrid(worldPt);
-	    chargeSpawnPoint.set(worldPt);
-	    chargeSpawning = true;
-	  }
 
 	  /**
 	   * Snaps the world point to the nearest grid point
@@ -892,7 +903,7 @@ class TestQueryCallback implements QueryCallback {
 
 
 enum QueueItemType {
-	QMouse
+	QMouse, WMouse
 }
 
 
