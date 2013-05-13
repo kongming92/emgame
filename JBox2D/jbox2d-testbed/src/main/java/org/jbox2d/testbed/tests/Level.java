@@ -143,11 +143,11 @@ public class Level extends TestbedTest {
     
     //starting to make the shape
     PolygonShape poly=new PolygonShape();
-    Vec2 [] pointA = { new Vec2( 0, 3), new Vec2( 4, 3),new Vec2(2,0)  };
+    Vec2 [] pointA = { new Vec2( 2f, 1.15f), new Vec2( -2, 1.15f),new Vec2(0,-2.3f)  };
     poly.set(pointA, 3);
     
     PolygonShape poly2=new PolygonShape();
-    Vec2 [] pointB={new Vec2(0,1), new Vec2(2,4), new Vec2(4,1)};
+    Vec2 [] pointB={ new Vec2( 2f, -1.15f), new Vec2( -2, -1.15f),new Vec2(0,2.3f)  };
     poly2.set(pointB, 3);
    
   
