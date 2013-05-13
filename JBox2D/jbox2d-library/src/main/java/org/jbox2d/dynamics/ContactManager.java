@@ -43,7 +43,7 @@ public class ContactManager implements PairCallback {
   public int m_contactCount;
   public ContactFilter m_contactFilter;
   public ContactListener m_contactListener;
-
+  public static boolean win=false;
   private final World pool;
 
   public ContactManager(World argPool, BroadPhaseStrategy strategy) {
@@ -286,11 +286,11 @@ public class ContactManager implements PairCallback {
         continue;
       }
       if (bodyB.isStar && bodyA.isPlayer){
-        System.out.println("Win!");
+        win=true;
         
       }
       if (bodyA.isStar && bodyB.isPlayer){
-        System.out.println("Win!");
+        win=true;
       }
       
       // The contact persists.

@@ -55,6 +55,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Charge;
+import org.jbox2d.dynamics.ContactManager;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.Profile;
@@ -573,6 +574,7 @@ public abstract class TestbedTest
   private final Color3f color4 = new Color3f(.6f, .61f, 1);
   private final Color3f color5 = new Color3f(.9f, .9f, .3f);
   private final Color3f mouseColor = new Color3f(0f, 1f, 0f);
+  private final Color3f color6 = new Color3f(.9f, .9f, .1f);
   private final Vec2 p1 = new Vec2();
   private final Vec2 p2 = new Vec2();
   private final Vec2 tangent = new Vec2();
@@ -724,7 +726,12 @@ public abstract class TestbedTest
         }
       }
     }
-    //checkCollision();
+    if (ContactManager.win){
+      debugDraw.drawString(20, m_textLine+50, "You Win!!!!!",color6);
+      settings.pause=true;
+      
+    }
+    
   }
 
   public void queueShiftMouseDown(Vec2 p) {
