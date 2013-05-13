@@ -219,7 +219,14 @@ public class Body {
 		// Let the world know we have a new fixture. This will cause new contacts
 		// to be created at the beginning of the next time step.
 		m_world.m_flags |= World.NEW_FIXTURE;
-
+		
+		//Holden
+		if (this instanceof Charge) {
+			fixture.type=(int) Math.signum(((Charge)this).charge);
+		} else if (this instanceof Star) {
+			fixture.type=2;
+		}
+		
 		return fixture;
 	}
 

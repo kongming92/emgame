@@ -31,6 +31,11 @@ public class Level extends TestbedTest {
 	private float v_x;
 	private float v_y;
 	private String levelFile;
+	private float positives;
+	private float negatives;
+	//are you allowed to set the velocity?
+	private boolean canSetVelocity;
+	
 	private static float DENSITY=10;
 
 	public Level(String fileName) {
@@ -85,9 +90,9 @@ public class Level extends TestbedTest {
 		}
 		//now create a Body in the world, and put the bodydef and the fixturedef into it
 		Charge body2 = getWorld().createCharge(bd2);
-		body2.createFixture(fd2);
 		//set the charge to be negative
 		body2.charge=charge;
+		body2.createFixture(fd2);
 		body2.isPlayer=isPlayer;
 		return body2;
 	}
@@ -180,6 +185,12 @@ public class Level extends TestbedTest {
 				v_x=scanner.nextFloat();
 				System.out.println(scanner.next());
 				v_y=scanner.nextFloat();
+				System.out.println(scanner.next());
+				setPositives(scanner.nextFloat());
+				System.out.println(scanner.next());
+				negatives=scanner.nextFloat();
+				System.out.println(scanner.next());
+				canSetVelocity=scanner.nextBoolean();
 				while (line.equals("") || line.charAt(0)=='\\') {
 					line = scanner.nextLine();
 					System.out.println(line);
@@ -232,5 +243,37 @@ public class Level extends TestbedTest {
 	public String getTestName() {
 		return "Level "+levelFile;
 	}
+
+	public float getPositives() {
+		return positives;
+	}
+
+	public void setPositives(float positives) {
+		this.positives = positives;
+	}
 	
+	public void decrementPositives() {
+		this.positives--;
+	}
+	
+	public float getNegatives() {
+		return negatives;
+	}
+
+	public void setNegatives(float negatives) {
+		this.negatives = negatives;
+	}
+	
+	public void decrementNegatives() {
+		this.negatives--;
+	}
+
+	public boolean isCanSetVelocity() {
+		return canSetVelocity;
+	}
+
+	public void setCanSetVelocity(boolean canSetVelocity) {
+		this.canSetVelocity = canSetVelocity;
+	}
+
 }

@@ -78,6 +78,33 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   private static JButton nextLevel = new JButton("Next Level");
 
 
+  public enum Counter { 
+	  POSITIVES ("Positives"), NEGATIVES ("Negatives");
+	  
+	  String name;
+	  JLabel label;
+	  int count;
+	  private Counter(String name) {
+		  this.name = name;
+		  this.count = 0;
+	  }
+	  public String getName() {
+		  return name;
+	  }
+	  public void setLabel(JLabel label) {
+		  this.label = label;
+	  }
+	  public void setCount(int count) {
+		  this.count = count;
+	  }
+	  public int getCount() {
+		  return count;
+	  }
+	  public void updateLabel() {
+		  label.setText(name + ": " + count);
+	  }
+  };
+  
   public TestbedSidePanel(TestbedModel argModel, TestbedController argController) {
     model = argModel;
     controller = argController;
@@ -149,7 +176,9 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     top.add(new JLabel("Choose a level:"));
     top.add(tests);
 
-    //addSettings(top, settings, SettingType.DRAWING);
+    addCounters(top);
+    updateCounter(Counter.POSITIVES, 5); // example to update counters
+    updateCounter(Counter.NEGATIVES, 4); // example to update counters
 
     add(top, "North");
 
@@ -157,8 +186,6 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     middle.setLayout(new GridLayout(0, 1));
     middle.setBorder(BorderFactory.createCompoundBorder(new EtchedBorder(EtchedBorder.LOWERED),
         BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-
-    //addSettings(middle, settings, SettingType.ENGINE);
 
     add(middle, "Center");
 
@@ -239,6 +266,25 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     
   }
 
+  
+  private void addCounters(JPanel panel) {
+	  for (Counter counter : Counter.values()) {
+		  JPanel counterPanel = new JPanel();
+		  panel.add(counterPanel);
+		  
+		  JLabel label = new JLabel();
+		  counterPanel.add(label);
+		  counter.setLabel(label);
+		  counter.updateLabel();
+	  }
+  }
+  
+  public void updateCounter(Counter counter, int count) {
+	  counter.setCount(count);
+	  counter.updateLabel();
+  }
+  
+  
   private void addSettings(JPanel argPanel, TestbedSettings argSettings, SettingType argIgnore) {
     for (TestbedSetting setting : argSettings.getSettings()) {
       if (setting.settingsType == argIgnore) {

@@ -53,4 +53,8 @@ public class MagneticField extends Body {
 		return ((p.x>=getPosition().x-hx)&&(p.x<=getPosition().x+hx)&& (p.y>=getPosition().y-hy)&& (p.y<=getPosition().y+hy));
 	}
 	
+	public void flip() { 
+		bField=-bField;
+	}
+	
 }

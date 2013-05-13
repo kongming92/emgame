@@ -737,9 +737,9 @@ public abstract class TestbedTest
 		}
 		//now create a Body in the world, and put the bodydef and the fixturedef into it
 		Charge body2 = getWorld().createCharge(bd2);
-		body2.createFixture(fd2);
 		//set the charge to be negative
 		body2.charge=charge;
+		body2.createFixture(fd2);
 		return body2;
 	}
 

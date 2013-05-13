@@ -1548,6 +1548,13 @@ public class World {
 	private final Vec2Array tlvertices = new Vec2Array();
 
 	private void drawShape(Fixture fixture, Transform xf, Color3f color) {
+	    System.out.println("Fixture type: "+fixture.type);
+	    if (fixture.type==1) {
+	    	color = new Color3f(1f,0f,0f);
+	    } else if (fixture.type==-1) {
+	    	color = new Color3f(0f,0f,1f);
+	    }
+		
 		switch (fixture.getType()) {
 		case CIRCLE: {
 			CircleShape circle = (CircleShape) fixture.getShape();
