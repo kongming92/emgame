@@ -659,7 +659,7 @@ public abstract class TestbedTest
       }
     }
     if (ContactManager.win){
-      debugDraw.drawString(20, m_textLine+50, "You Win!!!!!",color6);
+      debugDraw.drawString(20, 200, "You Win!!!!!",color6);
       settings.pause=true;
       TestbedSidePanel.enableNextLevel();
       

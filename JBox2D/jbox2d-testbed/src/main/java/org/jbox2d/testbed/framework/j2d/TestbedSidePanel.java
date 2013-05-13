@@ -47,6 +47,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.jbox2d.common.Color3f;
+import org.jbox2d.dynamics.ContactManager;
 import org.jbox2d.testbed.framework.TestbedController;
 import org.jbox2d.testbed.framework.TestbedModel;
 import org.jbox2d.testbed.framework.TestbedModel.ListItem;
@@ -246,7 +248,10 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     resetButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        model.getSettings().pause=false;
+        ContactManager.win=false;
         controller.resetTest();
+        model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
       }
     });
 
@@ -336,5 +341,8 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   }
   public static void enableNextLevel(){
     nextLevel.setEnabled(true);
+  }
+  public static void disableNextLevel(){
+    nextLevel.setEnabled(false);
   }
 }
