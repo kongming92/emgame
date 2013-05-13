@@ -27,6 +27,7 @@
 package org.jbox2d.testbed.framework;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.UIManager;
 import org.jbox2d.testbed.framework.TestbedController.UpdateBehavior;
 import org.jbox2d.testbed.framework.j2d.TestPanelJ2D;
@@ -34,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * THIS IS THE CORRECT TESTBED TO RUN!!
  * The entry point for the testbed application
  * 
  * @author Daniel Murphy
@@ -52,6 +54,7 @@ public class TestbedMain {
     TestbedPanel panel = new TestPanelJ2D(model);
     TestList.populateModel(model);
     JFrame testbed = new TestbedFrame(model, panel, UpdateBehavior.UPDATE_CALLED);
+    
     testbed.setVisible(true);
     testbed.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
