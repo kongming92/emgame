@@ -1,7 +1,7 @@
 *.class
+.classpath
 *.lock
 *.DS_Store
 *.swp
 *.iml
 *.idea
-.classpath
