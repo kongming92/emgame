@@ -232,6 +232,7 @@ public class ContactManager implements PairCallback {
    * processed for the world contact list.
    */
   public void collide() {
+   
     // Update awake contacts.
     Contact c = m_contactList;
     while (c != null) {
@@ -241,7 +242,7 @@ public class ContactManager implements PairCallback {
       int indexB = c.getChildIndexB();
       Body bodyA = fixtureA.getBody();
       Body bodyB = fixtureB.getBody();
-
+      
       // is this contact flagged for filtering?
       if ((c.m_flags & Contact.FILTER_FLAG) == Contact.FILTER_FLAG) {
         // Should these bodies collide?
@@ -284,8 +285,16 @@ public class ContactManager implements PairCallback {
         destroy(cNuke);
         continue;
       }
-
+      if (bodyB.isStar && bodyA.isPlayer){
+        System.out.println("Win!");
+        
+      }
+      if (bodyA.isStar && bodyB.isPlayer){
+        System.out.println("Win!");
+      }
+      
       // The contact persists.
+
       c.update(m_contactListener);
       c = c.getNext();
     }

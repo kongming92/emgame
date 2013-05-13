@@ -709,6 +709,7 @@ public abstract class TestbedTest
         }
       }
     }
+    //checkCollision();
   }
 
   public void queueShiftMouseDown(Vec2 p) {

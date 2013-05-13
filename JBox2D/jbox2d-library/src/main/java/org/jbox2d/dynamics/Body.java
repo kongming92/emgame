@@ -96,6 +96,10 @@ public class Body {
 
 	public Object m_userData;
 
+  public boolean isPlayer=false;
+  
+  public boolean isStar=false;
+	
 	/**
 	 * Charge of body
 	 */
