@@ -4,4 +4,15 @@
 *.swp
 *.iml
 *.idea
-.classpath
+*.classpath
+.svn*
+*.properties
+*/classes/*
+*/target/*
+log/
+target/
+*.project
+*.settings/
+JBox2D/jbox2d-serialization/
+JBox2D/jbox2d-testbed/src/main/java/org/jbox2d/testbed/framework/CopyOfTestbedTest.java
+

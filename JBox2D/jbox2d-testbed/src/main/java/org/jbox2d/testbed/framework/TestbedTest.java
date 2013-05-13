@@ -62,8 +62,6 @@ import org.jbox2d.dynamics.Profile;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.dynamics.joints.Joint;
-import org.jbox2d.dynamics.joints.MouseJoint;
-import org.jbox2d.dynamics.joints.MouseJointDef;
 import org.jbox2d.serialization.JbDeserializer;
 import org.jbox2d.serialization.JbDeserializer.ObjectListener;
 import org.jbox2d.serialization.JbSerializer;
@@ -106,11 +104,6 @@ public abstract class TestbedTest
    */
   protected World m_world;
   protected Body groundBody;
-  private MouseJoint mouseJoint;
-
-  private Body bomb;
-  private final Vec2 bombSpawnPoint = new Vec2();
-  private boolean bombSpawning = false;
   
   private Body charge;// ryan
   private final Vec2 chargeSpawnPoint = new Vec2(); // ryan
@@ -148,9 +141,7 @@ public abstract class TestbedTest
         if (isSaveLoadEnabled()) {
           if (argBody == groundBody) {
             return GROUND_BODY_TAG;
-          } else if (argBody == bomb) {
-            return BOMB_TAG;
-          }
+          } 
         }
         return super.getTag(argBody);
       }
@@ -158,9 +149,7 @@ public abstract class TestbedTest
       @Override
       public Long getTag(Joint argJoint) {
         if (isSaveLoadEnabled()) {
-          if (argJoint == mouseJoint) {
-            return MOUSE_JOINT_TAG;
-          }
+         
         }
         return super.getTag(argJoint);
       }
@@ -172,10 +161,7 @@ public abstract class TestbedTest
           if (argTag == GROUND_BODY_TAG) {
             groundBody = argBody;
             return;
-          } else if (argTag == BOMB_TAG) {
-            bomb = argBody;
-            return;
-          }
+          } 
         }
         super.processBody(argBody, argTag);
       }
@@ -183,10 +169,7 @@ public abstract class TestbedTest
       @Override
       public void processJoint(Joint argJoint, Long argTag) {
         if (isSaveLoadEnabled()) {
-          if (argTag == MOUSE_JOINT_TAG) {
-            mouseJoint = (MouseJoint) argJoint;
-            return;
-          }
+         
         }
         super.processJoint(argJoint, argTag);
       }
@@ -200,18 +183,12 @@ public abstract class TestbedTest
       public void sayGoodbye(Fixture fixture) {}
 
       public void sayGoodbye(Joint joint) {
-        if (mouseJoint == joint) {
-          mouseJoint = null;
-        } else {
-          jointDestroyed(joint);
-        }
+        
       }
     };
 
-    Vec2 gravity = new Vec2(0, -10f);
-    m_world = new World(gravity);
-    bomb = null;
-    mouseJoint = null;
+    m_world = new World(new Vec2(0,0));
+    
 
     BodyDef bodyDef = new BodyDef();
     groundBody = m_world.createBody(bodyDef);
@@ -222,7 +199,6 @@ public abstract class TestbedTest
   public void init(World argWorld, boolean argDeserialized) {
     pointCount = 0;
     stepCount = 0;
-    bombSpawning = false;
     chargeSpawning = false; // ryan
 
     argWorld.setDestructionListener(destructionListener);
@@ -306,20 +282,7 @@ public abstract class TestbedTest
     return pointCount;
   }
 
-  /**
-   * Gets the 'bomb' body if it's present
-   * 
-   * @return
-   */
-  public Body getBomb() {
-    return bomb;
-  }
-  
-  public void getCharge() {
-	  // return charge;
-	  // ryan
-	  return;
-  }
+
 
   public float getCachedCameraScale() {
     return cachedCameraScale;
@@ -539,26 +502,8 @@ public abstract class TestbedTest
         while (!inputQueue.isEmpty()) {
           QueueItem i = inputQueue.pop();
           switch (i.type) {
-            case KeyPressed:
-              keyPressed(i.c, i.code);
-              break;
-            case KeyReleased:
-              keyReleased(i.c, i.code);
-              break;
-            case MouseDown:
-              mouseDown(i.p);
-              break;
-            case MouseMove:
-              mouseMove(i.p);
-              break;
-            case MouseUp:
-              mouseUp(i.p);
-              break;
-            case ShiftMouseDown:
-              shiftMouseDown(i.p);
-              break;
-            case QMouseDown: // ryan
-                QMouseDown(i.p);
+            case QMouse: // ryan
+                qMouse(i.p);
                 break;
           }
         }
@@ -682,17 +627,6 @@ public abstract class TestbedTest
       textList.clear();
     }
 
-    if (mouseJoint != null) {
-      mouseJoint.getAnchorB(p1);
-      Vec2 p2 = mouseJoint.getTarget();
-
-      debugDraw.drawSegment(p1, p2, mouseColor);
-    }
-
-    if (bombSpawning) {
-      debugDraw.drawSegment(bombSpawnPoint, mouseWorld, Color3f.WHITE);
-    }
-
     if (settings.getSetting(TestbedSettings.DrawContactPoints).enabled) {
       final float k_impulseScale = 0.1f;
       final float axisScale = 0.3f;
@@ -733,141 +667,21 @@ public abstract class TestbedTest
     }
     
   }
-
-  public void queueShiftMouseDown(Vec2 p) {
-    synchronized (inputQueue) {
-      inputQueue.addLast(new QueueItem(QueueItemType.ShiftMouseDown, p));
-    }
-  }
   
-  public void queueQMouseDown(Vec2 p) { // ryan
+  public void queueQMouse(Vec2 p) { // ryan
 	    synchronized (inputQueue) {
-	      inputQueue.addLast(new QueueItem(QueueItemType.QMouseDown, p));
+	      inputQueue.addLast(new QueueItem(QueueItemType.QMouse, p));
 	    }
 	  }
 
-  public void queueMouseUp(Vec2 p) {
-    synchronized (inputQueue) {
-      inputQueue.addLast(new QueueItem(QueueItemType.MouseUp, p));
-    }
-  }
-
-  public void queueMouseDown(Vec2 p) {
-    synchronized (inputQueue) {
-      inputQueue.addLast(new QueueItem(QueueItemType.MouseDown, p));
-    }
-  }
-
-  public void queueMouseMove(Vec2 p) {
-    synchronized (inputQueue) {
-      inputQueue.addLast(new QueueItem(QueueItemType.MouseMove, p));
-    }
-  }
-
-  public void queueKeyPressed(char c, int code) {
-    synchronized (inputQueue) {
-      inputQueue.addLast(new QueueItem(QueueItemType.KeyPressed, c, code));
-    }
-  }
-
-  public void queueKeyReleased(char c, int code) {
-    synchronized (inputQueue) {
-      inputQueue.addLast(new QueueItem(QueueItemType.KeyReleased, c, code));
-    }
-  }
-
-  /**
-   * Called when shift-mouse down occurs
-   * 
-   * @param p
-   */
-  public void shiftMouseDown(Vec2 p) {
-    mouseWorld.set(p);
-
-    if (mouseJoint != null) {
-      return;
-    }
-
-    spawnBomb(p);
-  }
-  
-  
-  public void QMouseDown(Vec2 p) { //ryan
+  public void qMouse(Vec2 p) { //ryan
 	    mouseWorld.set(p);
-
-	    if (mouseJoint != null) {
-	      return;
+	    synchronized(this) {
+	    	chargeSpawnPoint.set(snapWorldPtToGrid(p));
+	    	makeCharge(chargeSpawnPoint, vel);
 	    }
-
-	    spawnCharge(p);
-	  }
+  }
   
-
-  /**
-   * Called for mouse-up
-   * 
-   * @param p
-   */
-  public void mouseUp(Vec2 p) {
-    if (mouseJoint != null) {
-      m_world.destroyJoint(mouseJoint);
-      mouseJoint = null;
-    }
-
-    if (bombSpawning) {
-      completeBombSpawn(p);
-    }
-    
-    if (chargeSpawning) { // ryan
-    	completeChargeSpawn(p);
-    }
-  }
-
-  private final AABB queryAABB = new AABB();
-  private final TestQueryCallback callback = new TestQueryCallback();
-
-  /**
-   * Called for mouse-down
-   * 
-   * @param p
-   */
-  public void mouseDown(Vec2 p) {
-    mouseWorld.set(p);
-
-    if (mouseJoint != null) {
-      return;
-    }
-
-    queryAABB.lowerBound.set(p.x - .001f, p.y - .001f);
-    queryAABB.upperBound.set(p.x + .001f, p.y + .001f);
-    callback.point.set(p);
-    callback.fixture = null;
-    m_world.queryAABB(callback, queryAABB);
-
-    if (callback.fixture != null) {
-      Body body = callback.fixture.getBody();
-      MouseJointDef def = new MouseJointDef();
-      def.bodyA = groundBody;
-      def.bodyB = body;
-      def.target.set(p);
-      def.maxForce = 1000f * body.getMass();
-      mouseJoint = (MouseJoint) m_world.createJoint(def);
-      body.setAwake(true);
-    }
-  }
-
-  /**
-   * Called when mouse is moved
-   * 
-   * @param p
-   */
-  public void mouseMove(Vec2 p) {
-    mouseWorld.set(p);
-
-    if (mouseJoint != null) {
-      mouseJoint.setTarget(p);
-    }
-  }
 
   /**
    * Sets the title of the test
@@ -887,76 +701,14 @@ public abstract class TestbedTest
     textList.add(argTextLine);
   }
 
-  private final Vec2 p = new Vec2();
-  private final Vec2 v = new Vec2();
-
-  public void lanchBomb() {
-    p.set((float) (Math.random() * 30 - 15), 30f);
-    v.set(p).mulLocal(-5f);
-    launchBomb(p, v);
-  }
-
-  private final AABB aabb = new AABB();
-
-  public synchronized void launchBomb(Vec2 position, Vec2 velocity) {
-    if (bomb != null) {
-      m_world.destroyBody(bomb);
-      bomb = null;
-    }
-    // todo optimize this
-    BodyDef bd = new BodyDef();
-    bd.type = BodyType.DYNAMIC;
-    bd.position.set(position);
-    bomb = m_world.createBody(bd);
-    bomb.setLinearVelocity(velocity);
-
-    CircleShape circle = new CircleShape();
-    circle.m_radius = 0.3f;
-
-    FixtureDef fd = new FixtureDef();
-    fd.shape = circle;
-    fd.density = 20f;
-    fd.restitution = 0;
-
-    Vec2 minV = new Vec2(position);
-    Vec2 maxV = new Vec2(position);
-
-    minV.subLocal(new Vec2(.3f, .3f));
-    maxV.addLocal(new Vec2(.3f, .3f));
-
-    aabb.lowerBound.set(minV);
-    aabb.upperBound.set(maxV);
-
-    bomb.createFixture(fd);
-  }
-
-  public synchronized void spawnBomb(Vec2 worldPt) {
-    bombSpawnPoint.set(worldPt);
-    bombSpawning = true;
-  }
-
   private final Vec2 vel = new Vec2();
 
-  public synchronized void completeBombSpawn(Vec2 p) {
-    if (bombSpawning == false) {
-      return;
-    }
-
-    float multiplier = 30f;
-    vel.set(bombSpawnPoint).subLocal(p);
-    vel.mulLocal(multiplier);
-    launchBomb(bombSpawnPoint, vel);
-    bombSpawning = false;
-  }
-  
-  
-  
+    
   public synchronized void makeCharge(Vec2 position, Vec2 velocity) { // ryan
 	    if (charge != null) {
 	      m_world.destroyBody(charge);
 	      charge = null;
 	    }
-	    // todo optimize this
 	    createCharge(position, BodyType.STATIC, 1);
 	    // positive
 	  }
@@ -1004,31 +756,15 @@ public abstract class TestbedTest
 	   * @return
 	   */
 	  private Vec2 snapWorldPtToGrid(Vec2 worldPt) {
-		  int xRes = 5; // width of a grid rect
-		  int yRes = 5; // height of a grid rect
+		  int xRes = 2; // width of a grid rect
+		  int yRes = 2; // height of a grid rect
 		  Vec2 newPt = new Vec2(worldPt);
 		  newPt.x = xRes * Math.round(worldPt.x / (float)xRes);
 		  newPt.y = yRes * Math.round(worldPt.y / (float)yRes);
 		  return newPt;
 	  }
 
-	private final Vec2 vel2 = new Vec2();
-
-	  public synchronized void completeChargeSpawn(Vec2 p) { // ryan
-	    if (chargeSpawning == false) {
-	      return;
-	    }
-
-	    float multiplier = 30f;
-	    vel2.set(bombSpawnPoint).subLocal(p);
-	    vel2.mulLocal(multiplier);
-	    makeCharge(chargeSpawnPoint, vel);
-	    chargeSpawning = false;
-	  }
 	  
-	  
-	  
-
   /**
    * Override to enable saving and loading. Remember to also override the {@link ObjectListener} and
    * {@link ObjectSigner} methods if you need to
@@ -1156,7 +892,7 @@ class TestQueryCallback implements QueryCallback {
 
 
 enum QueueItemType {
-  MouseDown, MouseMove, MouseUp, ShiftMouseDown, QMouseDown, KeyPressed, KeyReleased
+	QMouse
 }
 
 

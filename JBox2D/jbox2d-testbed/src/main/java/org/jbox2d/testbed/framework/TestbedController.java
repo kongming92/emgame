@@ -94,9 +94,7 @@ public class TestbedController implements Runnable {
           model.getKeys()[key] = false;
         }
         model.getCodedKeys()[code] = false;
-        if (model.getCurrTest() != null) {
-          model.getCurrTest().queueKeyReleased(key, code);
-        }
+        
       }
 
       @Override
@@ -109,7 +107,7 @@ public class TestbedController implements Runnable {
         model.getCodedKeys()[code] = true;
 
         if (key == ' ' && model.getCurrTest() != null) {
-          model.getCurrTest().lanchBomb();
+         // model.getCurrTest().lanchBomb();
         } else if (key == '[') {
           lastTest();
         } else if (key == ']') {
@@ -118,77 +116,23 @@ public class TestbedController implements Runnable {
           resetTest();
         }
         else if (model.getCurrTest() != null) {
-          model.getCurrTest().queueKeyPressed(key, code);
         }
       }
     });
 
     panel.addMouseListener(new MouseAdapter() {
+      
       @Override
-      public void mouseReleased(MouseEvent e) {
-        if (model.getCurrTest() != null) {
-          Vec2 pos = new Vec2(e.getX(), e.getY());
-          model.getDebugDraw().getScreenToWorldToOut(pos, pos);
-          model.getCurrTest().queueMouseUp(pos);
-        }
-      }
-
-      @Override
-      public void mousePressed(MouseEvent e) {
-        panel.grabFocus();
-        if (model.getCurrTest() != null) {
-          Vec2 pos = new Vec2(e.getX(), e.getY());
-          if (e.getButton() == MouseEvent.BUTTON1) {
-            model.getDebugDraw().getScreenToWorldToOut(pos, pos);
-            model.getCurrTest().queueMouseDown(pos);
-            if (model.getCodedKeys()[KeyEvent.VK_SHIFT]) {
-              model.getCurrTest().queueShiftMouseDown(pos);
-            }
-            if (model.getCodedKeys()[KeyEvent.VK_Q]) {
-                model.getCurrTest().queueQMouseDown(pos);
-              }
-          }
-        }
-      }
-    });
-
-    panel.addMouseMotionListener(new MouseMotionListener() {
-      final Vec2 posDif = new Vec2();
-      final Vec2 pos = new Vec2();
-      final Vec2 pos2 = new Vec2();
-
-      public void mouseDragged(MouseEvent e) {
-        pos.set(e.getX(), e.getY());
-
-        if (e.getButton() == MouseEvent.BUTTON3) {
-          posDif.set(model.getMouse());
-          model.setMouse(pos);
-          posDif.subLocal(pos);
-          if(!model.getDebugDraw().getViewportTranform().isYFlip()){
-            posDif.y *= -1;
-          }
-          model.getDebugDraw().getViewportTranform().getScreenVectorToWorld(posDif, posDif);
-          model.getDebugDraw().getViewportTranform().getCenter().addLocal(posDif);
+      public void mouseClicked(MouseEvent e) {
+    	  panel.grabFocus();
           if (model.getCurrTest() != null) {
-            model.getCurrTest().setCachedCameraPos(
-                model.getDebugDraw().getViewportTranform().getCenter());
-          }
-        }
-        if (model.getCurrTest() != null) {
-          model.setMouse(pos);
-          model.getDebugDraw().getScreenToWorldToOut(pos, pos);
-          model.getCurrTest().queueMouseMove(pos);
-        }
-      }
-
-      @Override
-      public void mouseMoved(MouseEvent e) {
-        pos2.set(e.getX(), e.getY());
-        model.setMouse(pos2);
-        if (model.getCurrTest() != null) {
-          model.getDebugDraw().getScreenToWorldToOut(pos2, pos2);
-          model.getCurrTest().queueMouseMove(pos2);
-        }
+            Vec2 pos = new Vec2(e.getX(), e.getY());
+            if (e.getButton() == MouseEvent.BUTTON1 && model.getCodedKeys()[KeyEvent.VK_Q]) {
+                model.getDebugDraw().getScreenToWorldToOut(pos, pos);
+            	model.getCurrTest().queueQMouse(pos); // Q
+            }
+            
+          }    	  
       }
     });
   }
