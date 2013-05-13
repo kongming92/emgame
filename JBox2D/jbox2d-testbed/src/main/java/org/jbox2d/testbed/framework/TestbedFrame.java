@@ -50,7 +50,7 @@ public class TestbedFrame extends JFrame {
   private TestbedController controller;
 
   public TestbedFrame(final TestbedModel argModel, final TestbedPanel argPanel, TestbedController.UpdateBehavior behavior) {
-    super("JBox2D Testbed");
+    super("Modified JBox2D Testbed");
     setLayout(new BorderLayout());
 
     model = argModel;

@@ -251,4 +251,7 @@ public abstract class DebugDraw {
 		viewportTransform.getScreenToWorld( screen, screen);
 		return screen;
 	}
+
+	public abstract void drawNegative(Vec2 center, float radius);
+	public abstract void drawPositive(Vec2 center, float radius);
 }

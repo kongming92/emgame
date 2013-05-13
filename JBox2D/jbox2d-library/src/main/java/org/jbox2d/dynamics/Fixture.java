@@ -47,7 +47,6 @@ import org.jbox2d.dynamics.contacts.ContactEdge;
  */
 public class Fixture {
 
-<<<<<<< HEAD
 	//-1 if negative, +1 if positive, 0 else
 	public int type;
 

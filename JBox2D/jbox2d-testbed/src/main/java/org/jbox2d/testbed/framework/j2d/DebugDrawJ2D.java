@@ -144,6 +144,24 @@ public class DebugDrawJ2D extends DebugDraw {
     // outside
     drawPolygon(vertices, vertexCount, color);
   }
+  
+  @Override
+  public void drawNegative(Vec2 center, float radius) {
+	  Vec2 p1 = new Vec2(center.x - radius/2, center.y);
+	  Vec2 p2 = new Vec2(center.x + radius/2, center.y);
+	  drawSegment(p1, p2, new Color3f(1, 1, 1));
+  }
+  
+  @Override
+  public void drawPositive(Vec2 center, float radius) {
+	  Vec2 p1, p2;
+	  p1 = new Vec2(center.x - radius/2, center.y);
+	  p2 = new Vec2(center.x + radius/2, center.y);
+	  drawSegment(p1, p2, new Color3f(1, 1, 1));
+	  p1 = new Vec2(center.x, center.y - radius/2);
+	  p2 = new Vec2(center.x, center.y + radius/2);
+	  drawSegment(p1, p2, new Color3f(1, 1, 1));
+  }
 
   @Override
   public void drawString(float x, float y, String s, Color3f color) {

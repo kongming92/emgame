@@ -1581,6 +1581,11 @@ public class World {
 			}
 
 			m_debugDraw.drawSolidCircle(center, radius, axis, color);
+			if (fixture.type==1) {
+				m_debugDraw.drawPositive(center, radius);
+		    } else if (fixture.type==-1) {
+		    	m_debugDraw.drawNegative(center, radius);
+		    }
 		}
 		break;
 
