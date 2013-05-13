@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
+import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
 import javax.swing.JOptionPane;
 
 import org.jbox2d.callbacks.ContactImpulse;
@@ -604,9 +604,7 @@ public abstract class TestbedTest
       debugDraw.drawString(5, m_textLine, "Click and drag the left mouse button to move objects.",
           Color3f.WHITE);
       m_textLine += 15;
-      debugDraw.drawString(5, m_textLine, "Shift-Click to aim a bullet, or press space.",
-          Color3f.WHITE);
-      m_textLine += 15;
+
       debugDraw.drawString(5, m_textLine,
           "Click and drag the right mouse button to move the view.", Color3f.WHITE);
       m_textLine += 15;
@@ -663,6 +661,7 @@ public abstract class TestbedTest
     if (ContactManager.win){
       debugDraw.drawString(20, m_textLine+50, "You Win!!!!!",color6);
       settings.pause=true;
+      TestbedSidePanel.enableNextLevel();
       
     }
     

@@ -181,9 +181,7 @@ public class CollisionProcessing extends TestbedTest {
     // Destroy the bodies, skipping duplicates.
     for (Body b : nuke) {
 
-      if (b != getBomb()) {
-        getWorld().destroyBody(b);
-      }
+      
     }
   }
 
