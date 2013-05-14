@@ -103,14 +103,26 @@ public class TestList {
 //    model.addTest(new LiquidTest());
     
     model.addCategory("Charges");
-    model.addTest(new Level("levels/trivial.txt"));    
+    model.addTest(new Level("levels/simple.txt")); 
+    
     model.addTest(new Level("levels/attraction.txt"));
     model.addTest(new Level("levels/attraction2.txt"));
-    model.addTest(new Level("levels/repulsion1.txt")); 
-    model.addTest(new Level("levels/level1.txt"));    
-    model.addTest(new Level("levels/level2.txt"));
-    model.addTest(new Level("levels/level3.txt"));    
-    model.addTest(new Level("levels/circle.txt"));
+    
+    model.addTest(new Level("levels/repulsion1.txt"));
+    model.addTest(new Level("levels/repulsion2.txt"));
+    
+    model.addTest(new Level("levels/bfield1.txt"));
+    model.addTest(new Level("levels/bfield12.txt"));
+
+    model.addTest(new Level("levels/nemesis.txt"));
+    model.addTest(new Level("levels/needle.txt"));
+    model.addTest(new Level("levels/arc.txt"));
+        
+    model.addTest(new Level("levels/capcitor.txt"));
+        
+    model.addTest(new Level("levels/evil.txt"));
+    
+    model.addTest(new Level("levels/level3.txt"));
     //model.addTest(new DragDrop());
   }
 }
