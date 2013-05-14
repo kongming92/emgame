@@ -285,11 +285,11 @@ public class ContactManager implements PairCallback {
         destroy(cNuke);
         continue;
       }
-      if (bodyB.isStar && bodyA.isPlayer){
+      if (fixtureB.getRealType() == Fixture.Type.STAR && bodyA.isPlayer){
         win=true;
         
       }
-      if (bodyA.isStar && bodyB.isPlayer){
+      if (fixtureA.getRealType() == Fixture.Type.STAR && bodyB.isPlayer){
         win=true;
       }
       

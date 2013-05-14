@@ -48,7 +48,7 @@ import org.jbox2d.dynamics.contacts.ContactEdge;
 public class Fixture {
 	//-1 if negative, +1 if positive, 0 none, +2 star
 
-	public enum Type { NONE, MAGNETIC_FIELD_IN };
+	public enum Type { NONE, MAGNETIC_FIELD_IN, STAR };
 	
 	public Type m_realtype;
 	public int type;

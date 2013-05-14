@@ -143,11 +143,16 @@ public class Level extends TestbedTest {
     
     FixtureDef fd2 = new FixtureDef();
     fd2.filter.categoryBits=0x0002;
-    fd2.filter.maskBits=0x0001;//can collide with player 1
+    fd2.filter.maskBits=0x0000;//collide with nothing
     
     FixtureDef fd3 = new FixtureDef();
     fd3.filter.categoryBits=0x0002;
-    fd3.filter.maskBits=0x0001;//can collide with player 1
+    fd3.filter.maskBits=0x0000;//collide with nothing
+    
+    FixtureDef fd4 = new FixtureDef(); // This is the thing that will actually collide
+    fd4.filter.categoryBits=0x0002;
+    fd4.filter.maskBits=0x0001;//can collide with player 1
+    fd4.realtype = Fixture.Type.STAR;
     
     //starting to make the shape
     PolygonShape poly=new PolygonShape();
@@ -158,15 +163,18 @@ public class Level extends TestbedTest {
     Vec2 [] pointB={ new Vec2( 2f, -1.15f), new Vec2( -2, -1.15f),new Vec2(0,2.3f)  };
     poly2.set(pointB, 3);
    
+    CircleShape circle1 = new CircleShape();
+    circle1.setRadius(0);
   
     fd2.shape=poly;
     fd3.shape=poly2;
-    
+    fd4.shape = circle1;
     
   //now create a Body in the world, and put the bodydef and the fixturedef into it
     Star body2 = getWorld().createStar(bd2);
     body2.createFixture(fd2);
     body2.createFixture(fd3);
+    body2.createFixture(fd4);
     body2.isStar=true;
     return body2;
   }
