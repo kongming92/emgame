@@ -65,6 +65,8 @@ public class FixtureDef {
 	 */
 	public boolean isSensor;
 	
+	public Fixture.Type realtype;
+	
 	/**
 	 * Contact filtering data;
 	 */
@@ -78,5 +80,6 @@ public class FixtureDef {
 		density = 0f;
 		filter = new Filter();
 		isSensor = false;
+		realtype = Fixture.Type.NONE;
 	}
 }

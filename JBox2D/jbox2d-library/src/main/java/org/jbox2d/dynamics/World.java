@@ -72,6 +72,7 @@ import org.jbox2d.pooling.normal.DefaultWorldPool;
  * @author Daniel Murphy
  */
 public class World {
+	public static final float SPEED = 4;
 	public static final int WORLD_POOL_SIZE = 100;
 	public static final int WORLD_POOL_CONTAINER_SIZE = 10;
 
@@ -1548,7 +1549,7 @@ public class World {
 	private final Vec2Array tlvertices = new Vec2Array();
 
 	private void drawShape(Fixture fixture, Transform xf, Color3f color) {
-	    System.out.println("Fixture type: "+fixture.type);
+	    //System.out.println("Fixture type: "+fixture.type);
 	    if (fixture.type==1) {
 	    	color = new Color3f(.8f,0f,0f);
 	    } else if (fixture.type==-1) {
@@ -1587,7 +1588,7 @@ public class World {
 				m_debugDraw.drawPositive(center, radius);
 		    } else if (fixture.type==-1) {
 		    	m_debugDraw.drawNegative(center, radius);
-		    }
+		    } 
 		}
 		break;
 
@@ -1601,8 +1602,11 @@ public class World {
 				// vertices[i] = Mul(xf, poly.m_vertices[i]);
 				Transform.mulToOutUnsafe(xf, poly.m_vertices[i], vertices[i]);
 			}
-
-			m_debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+			if (fixture.getRealType() == Fixture.Type.MAGNETIC_FIELD_IN) {
+				m_debugDraw.drawBFieldIn(vertices, vertexCount, color);
+			} else {
+				m_debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+			}
 		}
 		break;
 		case EDGE: {
