@@ -106,6 +106,12 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 	  public void updateLabel() {
 		  label.setText(name + ": " + count);
 	  }
+	  public int updateCount(){
+	    updateCounter(this, count-1);
+	    System.out.println("Joanie ");
+	    System.out.println(getCount());
+	    return getCount();
+	  }
   };
   
   public TestbedSidePanel(TestbedModel argModel, TestbedController argController) {
@@ -183,8 +189,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     top.add(tests);
 
     addCounters(top);
-    updateCounter(Counter.POSITIVES, 5); // example to update counters
-    updateCounter(Counter.NEGATIVES, 4); // example to update counters
+    
 
     add(top, "North");
 
@@ -247,7 +252,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         controller.resetTest();
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
         playButton.setEnabled(true);
-        controller.setupMode=true;
+        controller.enableAddCharges();
       }
     });
 
@@ -260,7 +265,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     playButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        controller.setupMode = false;
+        controller.disableAddCharges();
         playButton.setEnabled(false);
         model.getSettings().pause=false;
       }
@@ -289,10 +294,18 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 		  counterPanel.add(label);
 		  counter.setLabel(label);
 		  counter.updateLabel();
+		  if (counter.name=="Positives"){
+		    model.posCounter=counter;
+		    updateCounter(counter,5);
+		  }
+		  if (counter.name=="Negatives"){
+		    model.negCounter=counter;
+		    updateCounter(counter,5);
+		  }
 	  }
   }
   
-  public void updateCounter(Counter counter, int count) {
+  public static void updateCounter(Counter counter, int count) {
 	  counter.setCount(count);
 	  counter.updateLabel();
   }

@@ -722,19 +722,17 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
   }
   
   public void queueQMouse(Vec2 p) { // ryan
-    if (model.controller.setupMode){
 	    synchronized (inputQueue) {
 	      inputQueue.addLast(new QueueItem(QueueItemType.QMouse, p));
+	      model.posCounter.updateCount();
 	    }
-    }
   }
   
   public void queueWMouse(Vec2 p) {
-    if (model.controller.setupMode){
       synchronized (inputQueue) {
         inputQueue.addLast(new QueueItem(QueueItemType.WMouse, p));
+        model.negCounter.updateCount();
       }
-    }
   }
 
   public void qMouse(Vec2 p) { //ryan
@@ -777,7 +775,13 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	      m_world.destroyBody(charge);
 	      charge = null;
 	    }
-	    createCharge(position, BodyType.STATIC, c);
+	    if ( c < 0 && model.controller.addV){
+	      createCharge(position, BodyType.STATIC, c);
+	    }
+	    else if ( c > 0 && model.controller.addQ){
+	      createCharge(position, BodyType.STATIC, c);
+	    }
+	    
 	  }
   
     protected Charge createCharge(Vec2 position, BodyType type, float charge, float r, float density) {
