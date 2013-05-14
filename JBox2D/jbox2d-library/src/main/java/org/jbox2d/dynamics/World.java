@@ -72,6 +72,7 @@ import org.jbox2d.pooling.normal.DefaultWorldPool;
  * @author Daniel Murphy
  */
 public class World {
+	public static final float SPEED = 4;
 	public static final int WORLD_POOL_SIZE = 100;
 	public static final int WORLD_POOL_CONTAINER_SIZE = 10;
 
