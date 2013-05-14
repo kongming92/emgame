@@ -115,7 +115,6 @@ public abstract class TestbedTest
   
   private Body charge;// ryan
   private final Vec2 chargeSpawnPoint = new Vec2(); // ryan
-  private boolean chargeSpawning = false; // ryan
 
   private final Vec2 mouseWorld = new Vec2();
   private int pointCount;
@@ -210,7 +209,6 @@ public abstract class TestbedTest
   public void init(World argWorld, boolean argDeserialized) {
     pointCount = 0;
     stepCount = 0;
-    chargeSpawning = false; // ryan
 
     argWorld.setDestructionListener(destructionListener);
     argWorld.setContactListener(this);
@@ -578,7 +576,6 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
   private final Color3f color3 = new Color3f(.9f, .9f, .9f);
   private final Color3f color4 = new Color3f(.6f, .61f, 1);
   private final Color3f color5 = new Color3f(.9f, .9f, .3f);
-  private final Color3f mouseColor = new Color3f(0f, 1f, 0f);
   private final Color3f color6 = new Color3f(.9f, .9f, .1f);
   private final Vec2 p1 = new Vec2();
   private final Vec2 p2 = new Vec2();

@@ -133,4 +133,28 @@ public class JoglDebugDraw extends DebugDraw {
       argPoints[i].y = (argCenter.y + MathUtils.sin(i * inc) * argRadius);
     }
   }
+
+@Override
+public void drawNegative(Vec2 center, float radius) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void drawPositive(Vec2 center, float radius) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void drawBFieldIn(Vec2[] vertices, int vertexCount, Color3f color) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void drawBFieldOut(Vec2[] vertices, int vertexCount, Color3f color) {
+	// TODO Auto-generated method stub
+	
+}
 }

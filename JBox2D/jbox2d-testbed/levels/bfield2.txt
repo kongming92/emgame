@@ -5,6 +5,9 @@ yRes= 2
 r= 1
 v_x= 0
 v_y= 0
+positives= 2
+negatives= 3
+canSetVelocity= false
 
 \\\\\\\\\\\\\\
          *   \
