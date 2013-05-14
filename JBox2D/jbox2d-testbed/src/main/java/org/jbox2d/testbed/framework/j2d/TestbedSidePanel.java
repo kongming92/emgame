@@ -57,6 +57,7 @@ import org.jbox2d.testbed.framework.TestbedSetting;
 import org.jbox2d.testbed.framework.TestbedSetting.SettingType;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
+import org.jbox2d.testbed.tests.Level;
 
 
 /**
@@ -187,6 +188,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     top.add(tests);
 
     addCounters(top);
+    resetCounters();
     
 
     add(top, "North");
@@ -239,6 +241,12 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     add(buttonGroups, "South");
   }
 
+  private void resetCounters() {
+      // reset the counters
+      updateCounter(Counter.POSITIVES, (int)Level.getPositives());
+      updateCounter(Counter.NEGATIVES, (int)Level.getNegatives());
+  }
+  
   public void addListeners() {
     
 
@@ -251,6 +259,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
         playButton.setEnabled(true);
         controller.setupMode=true;
+        resetCounters();
       }
     });
 
@@ -279,6 +288,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         playButton.setEnabled(true);
         controller.resetTest();
         controller.setupMode=true;
+        resetCounters();
       }
     });
     
@@ -294,12 +304,6 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 		  counterPanel.add(label);
 		  counter.setLabel(label);
 		  counter.updateLabel();
-		  if (counter == Counter.POSITIVES) {
-		    updateCounter(counter, 5);
-		  }
-		  if (counter == Counter.NEGATIVES) {
-		    updateCounter(counter, 5);
-		  }
 	  }
   }
   

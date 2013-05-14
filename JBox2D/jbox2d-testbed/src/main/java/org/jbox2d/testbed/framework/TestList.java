@@ -102,6 +102,7 @@ public class TestList {
 //    model.addTest(new DistanceTest());
 //    model.addTest(new LiquidTest());
     
+   
     model.addCategory("Charges");
     model.addTest(new Level("levels/trivial.txt"));    
     model.addTest(new Level("levels/attraction.txt"));
