@@ -161,7 +161,7 @@ public class Level extends TestbedTest {
     EdgeShape shape = new EdgeShape();
     float x=position.x;
     float y=position.y;
-    shape.set(new Vec2(x, y-5), new Vec2(x, y+5));
+    shape.set(new Vec2(x, y-2), new Vec2(x, y+2));
     ground.createFixture(shape, 0.0f);
 	}
 	private void createHorizEdge(Vec2 position){
@@ -171,7 +171,7 @@ public class Level extends TestbedTest {
     EdgeShape shape = new EdgeShape();
     float x=position.x;
     float y=position.y;
-    shape.set(new Vec2(x-5, y), new Vec2(x+5, y));
+    shape.set(new Vec2(x-4, y), new Vec2(x+4, y));
     ground.createFixture(shape, 0.0f);
 	}
 	private void initFromFile(String s) {
