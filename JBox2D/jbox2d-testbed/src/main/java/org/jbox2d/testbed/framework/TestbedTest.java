@@ -743,10 +743,12 @@ public abstract class TestbedTest
 		BodyDef bd2 = new BodyDef();
 		bd2.position = position;
 		bd2.type = type;
+		boolean isPlayer=false; 
 		if (type==BodyType.DYNAMIC) {
 			//then it's the player's charge
 			fd2.filter.categoryBits=0x0001;
 			fd2.filter.maskBits=0x0007;//can collide with walls (4), charges (2), self (1) 
+			isPlayer = true;
 		} else {
 			//it's static
 			fd2.filter.categoryBits=0x0002;
@@ -757,6 +759,7 @@ public abstract class TestbedTest
 		//set the charge to be negative
 		body2.charge=charge;
 		body2.createFixture(fd2);
+		body2.isPlayer=isPlayer;
 		return body2;
     }
   

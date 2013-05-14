@@ -1,9 +1,7 @@
 package org.jbox2d.testbed.tests;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -20,7 +18,6 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.MagneticField;
 import org.jbox2d.dynamics.Star;
 import org.jbox2d.testbed.framework.TestbedTest;
-import org.jbox2d.common.Color3f;
 
 
 public class Level extends TestbedTest {
@@ -65,7 +62,9 @@ public class Level extends TestbedTest {
 	}
 
 	private Charge createCharge(Vec2 position, BodyType type, float charge) {
-		return super.createCharge(position, type, charge, r, DENSITY);
+		Charge chargeObject = super.createCharge(position, type, charge, r, DENSITY);
+	//	chargeObject.isPlayer = 
+		return chargeObject;
 	}
 
 	private Charge createCharge(Vec2 position, BodyType type, float charge, Vec2 velocity) {
