@@ -188,6 +188,22 @@ public class DebugDrawJ2D extends DebugDraw {
 	  drawField(vertices, vertexCount, color);
   }
   
+  @Override
+  public void drawBFieldOut(Vec2[] vertices, int vertexCount, Color3f color) {
+	  Graphics2D g = getGraphics();
+	  BufferedImage bufferedImage =
+			  new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+	  Graphics2D g2 = bufferedImage.createGraphics();
+	  g2.setColor(Color.GREEN);
+	  g2.fillRect(0, 0, 10, 10);
+	  g2.setColor(Color.BLACK);
+	  g2.fillOval(0, 0, 3, 3);
+	  // paint with the texturing brush
+	  Rectangle2D rect = new Rectangle2D.Double(0, 0, 10, 10);
+	  g.setPaint(new TexturePaint(bufferedImage, rect));
+	  drawField(vertices, vertexCount, color);
+  }
+  
   private void drawField(Vec2[] vertices, int vertexCount, Color3f color) {
 	  // inside
 	  Graphics2D g = getGraphics();

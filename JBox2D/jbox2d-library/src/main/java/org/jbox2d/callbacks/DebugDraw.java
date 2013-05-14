@@ -255,4 +255,5 @@ public abstract class DebugDraw {
 	public abstract void drawNegative(Vec2 center, float radius);
 	public abstract void drawPositive(Vec2 center, float radius);
 	public abstract void drawBFieldIn(Vec2[] vertices, int vertexCount, Color3f color);
+	public abstract void drawBFieldOut(Vec2[] vertices, int vertexCount, Color3f color);
 }
