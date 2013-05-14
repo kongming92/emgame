@@ -557,7 +557,7 @@ public void mouseDown(Vec2 p) {
 	m_world.queryAABB(callback, queryAABB);
 
 	if (callback.fixture != null) {
-		System.out.println("===================== YAY =========================");
+		System.out.println("===================== YAY =========================.");
 		Body body = callback.fixture.getBody();
 		MouseJointDef def = new MouseJointDef();
 		def.bodyA = groundBody;
