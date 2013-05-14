@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
+
 import javax.swing.JOptionPane;
 
 import org.jbox2d.callbacks.ContactImpulse;
@@ -62,6 +62,8 @@ import org.jbox2d.dynamics.Profile;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.dynamics.joints.MouseJoint;
+import org.jbox2d.dynamics.joints.MouseJointDef;
 import org.jbox2d.serialization.JbDeserializer;
 import org.jbox2d.serialization.JbDeserializer.ObjectListener;
 import org.jbox2d.serialization.JbSerializer;
@@ -71,6 +73,7 @@ import org.jbox2d.serialization.UnsupportedListener;
 import org.jbox2d.serialization.UnsupportedObjectException;
 import org.jbox2d.serialization.pb.PbDeserializer;
 import org.jbox2d.serialization.pb.PbSerializer;
+import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,6 +107,7 @@ public abstract class TestbedTest
    */
   protected World m_world;
   protected Body groundBody;
+  private MouseJoint mouseJoint;
   
   private Body charge;// ryan
   private final Vec2 chargeSpawnPoint = new Vec2(); // ryan
@@ -511,6 +515,9 @@ public abstract class TestbedTest
             case WMouse:
             	wMouse(i.p);
             	break;
+            case MouseDown:		
+            	mouseDown(i.p);		
+            	break;
           }
         }
       }
@@ -519,7 +526,50 @@ public abstract class TestbedTest
     step(model.getSettings());
   }
 
-  private final Color3f color1 = new Color3f(.3f, .95f, .3f);
+  public void queueMouseDown(Vec2 p) {
+	  synchronized (inputQueue) {
+		  inputQueue.addLast(new QueueItem(QueueItemType.MouseDown, p));
+	  }
+  }
+  
+  private final AABB queryAABB = new AABB();		
+  private final TestQueryCallback callback = new TestQueryCallback();		
+  	
+   /**		
+  * Called for mouse-down		
+  *		
+  * @param p		
+  */		
+public void mouseDown(Vec2 p) {
+	mouseWorld.set(p);
+
+	if (mouseJoint != null) {
+		return;
+	}
+
+	queryAABB.lowerBound.set(p.x - .001f, p.y - .001f);
+	queryAABB.upperBound.set(p.x + .001f, p.y + .001f);
+	callback.point.set(p);
+	callback.fixture = null;
+	m_world.queryAABB(callback, queryAABB);
+
+	if (callback.fixture != null) {
+		System.out.println("===================== YAY =========================");
+		Body body = callback.fixture.getBody();
+		MouseJointDef def = new MouseJointDef();
+		def.bodyA = groundBody;
+		def.bodyB = body;
+		def.target.set(p);
+		def.maxForce = 1000f * body.getMass();
+		mouseJoint = (MouseJoint) m_world.createJoint(def);
+		body.setAwake(true);
+	} else {
+		System.out.println("===================== NOPE =========================");
+	}
+}
+  
+
+private final Color3f color1 = new Color3f(.3f, .95f, .3f);
   private final Color3f color2 = new Color3f(.3f, .3f, .95f);
   private final Color3f color3 = new Color3f(.9f, .9f, .9f);
   private final Color3f color4 = new Color3f(.6f, .61f, 1);
@@ -903,7 +953,7 @@ class TestQueryCallback implements QueryCallback {
 
 
 enum QueueItemType {
-	QMouse, WMouse
+	QMouse, WMouse, MouseDown
 }
 
 
