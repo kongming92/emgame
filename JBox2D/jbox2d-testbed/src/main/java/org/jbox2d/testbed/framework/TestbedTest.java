@@ -814,8 +814,8 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 		Charge body2 = getWorld().createCharge(bd2);
 		//set the charge to be negative
 		body2.charge=charge;
-		body2.createFixture(fd2);
 		body2.isPlayer=isPlayer;
+		body2.createFixture(fd2);
 		return body2;
     }
   
