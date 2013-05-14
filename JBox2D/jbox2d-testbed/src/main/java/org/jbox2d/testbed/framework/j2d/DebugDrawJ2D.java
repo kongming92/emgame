@@ -65,7 +65,7 @@ public class DebugDrawJ2D extends DebugDraw {
 
   @Override
   public void drawCircle(Vec2 center, float radius, Color3f color) {
-	  System.out.println("drawing circle");
+	//System.out.println("drawing circle");
     Vec2[] vecs = vec2Array.get(circlePoints);
     generateCirle(center, radius, vecs, circlePoints);
     drawPolygon(vecs, circlePoints, color);
@@ -108,7 +108,7 @@ public class DebugDrawJ2D extends DebugDraw {
 
   @Override
   public void drawSolidCircle(Vec2 center, float radius, Vec2 axis, Color3f color) {
-	  System.out.println("drawing solid circle");
+	//System.out.println("drawing solid circle");
     Vec2[] vecs = vec2Array.get(circlePoints);
     generateCirle(center, radius, vecs, circlePoints);
     drawSolidPolygon(vecs, circlePoints, color);

@@ -10,7 +10,7 @@ negatives= 0
 canSetVelocity= false
 
 \\\\\\
--- --\
+--*--\
 o    \
 +++++\
 \\\\\\

@@ -24,6 +24,7 @@ import org.jbox2d.common.Color3f;
 
 public class Level extends TestbedTest {
 
+	private static final int B_STRENGTH = 30;
 	private float xMin;
 	private float yMax;
 	private float xRes;
@@ -128,6 +129,11 @@ public class Level extends TestbedTest {
 		body2.setbField(strength);
 		return body2;
 	}
+	
+	private MagneticField createMagneticField(float minX, float minY, float maxX, float maxY, float strength) {
+		return createMagneticField(new Vec2((minX+maxX)/2,(minY+maxY)/2),(maxY-minY)/2,(maxY-minY)/2,strength);
+	}
+	
 	private Star createStar(Vec2 position) {
 	  BodyDef bd2 = new BodyDef();
     bd2.position = position;
@@ -241,18 +247,21 @@ public class Level extends TestbedTest {
 						//putNew=true;
 						break;
 					case '*':
-            createStar(position);
-            break;
+						createStar(position);
+						break;
 					case 'l':
 					  //this is a vertical edge
-            createVertEdge(position);
-            break;
+						createVertEdge(position);
+						break;
 					case '_':
 					  //this is a horizontal edge
-            createHorizEdge(position);
-            break;
+						createHorizEdge(position);
+						break;
 					case 'x':
-						createMagneticField(position, xRes/2, yRes/2,10);
+						createMagneticField(position, xRes, yRes,-B_STRENGTH);
+						break;
+					case '.':
+						createMagneticField(position, xRes, yRes,B_STRENGTH);
 					case ' ':
 						//Do nothing
 					}
@@ -264,6 +273,17 @@ public class Level extends TestbedTest {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		if (scanner.hasNext() && scanner.nextLine().equals("Magnetic fields:")) {
+			while (scanner.hasNext()) {
+				float a=scanner.nextInt();
+				float b=scanner.nextInt();
+				float c=scanner.nextInt();
+				float d=scanner.nextInt();
+				float str=scanner.nextInt();
+				createMagneticField(a,b,c,d,str);
+			}
 		}
 		scanner.close();
 	}

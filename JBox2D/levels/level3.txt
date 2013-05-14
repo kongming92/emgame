@@ -11,6 +11,6 @@ canSetVelocity= false
 
 \\\\\\
      \
-o xx \
-  xx \
+o  x \
+     \
 \\\\\\

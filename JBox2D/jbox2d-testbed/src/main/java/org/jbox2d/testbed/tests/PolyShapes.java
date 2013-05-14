@@ -246,7 +246,7 @@ class PolyShapesCallback implements QueryCallback {
   }
 
   void DrawFixture(Fixture fixture) {
-	System.out.println("Drawing fixture");
+	//System.out.println("Drawing fixture");
     Color3f color = new Color3f(0.95f, 0.95f, 0.6f);
     
     final Transform xf = fixture.getBody().getTransform();
