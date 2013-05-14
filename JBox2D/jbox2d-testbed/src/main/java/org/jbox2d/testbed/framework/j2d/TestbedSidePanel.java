@@ -250,7 +250,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         controller.resetTest();
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
         playButton.setEnabled(true);
-        controller.enableAddCharges();
+        controller.setupMode=true;
       }
     });
 
@@ -263,7 +263,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     playButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        controller.disableAddCharges();
+        controller.setupMode=false;
         playButton.setEnabled(false);
         model.getSettings().pause=false;
       }
@@ -278,7 +278,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
         playButton.setEnabled(true);
         controller.resetTest();
-        controller.enableAddCharges();
+        controller.setupMode=true;
       }
     });
     

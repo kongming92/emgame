@@ -774,7 +774,7 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	      m_world.destroyBody(charge);
 	      charge = null;
 	    }
-	    
+	    if (model.controller.setupMode){
 	    if ( c == POSITIVE_CHARGE && Counter.POSITIVES.getCount() > 0) {
 	      createCharge(position, BodyType.STATIC, c);
 	      TestbedSidePanel.updateCounter(Counter.POSITIVES, Counter.POSITIVES.getCount() - 1);
@@ -783,7 +783,7 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	      createCharge(position, BodyType.STATIC, c);
 	      TestbedSidePanel.updateCounter(Counter.NEGATIVES, Counter.NEGATIVES.getCount() - 1);
 	    }
-	    
+	    }
 	  }
   
     protected Charge createCharge(Vec2 position, BodyType type, float charge, float r, float density) {
