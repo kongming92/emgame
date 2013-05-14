@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -78,6 +79,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   private JButton quitButton = new JButton("Quit");
   private static JButton nextLevel = new JButton("Next Level");
   private static JButton playButton = new JButton("Play");
+  private JLabel levelNumberLabel, titleLabel, descriptionLabel;
 
   public enum Counter { 
 	  POSITIVES ("Positives"), NEGATIVES ("Negatives");
@@ -174,6 +176,9 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
       }
     });
 
+    addLevelDescriptionArea(top);
+    updateLevelDescription(1, "Get charged up!", "Fun fun fun! Try to get to the star!"); // example to update level description
+
     top.add(new JLabel("Choose a level:"));
     top.add(tests);
 
@@ -189,7 +194,8 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         BorderFactory.createEmptyBorder(5, 10, 5, 10)));
 
     add(middle, "Center");
-
+    
+    
 
     resetButton.setAlignmentX(CENTER_ALIGNMENT);
 
@@ -318,6 +324,27 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
           break;
       }
     }
+  }
+  
+  private void addLevelDescriptionArea(JPanel panel) {
+	  levelNumberLabel = new JLabel("", JLabel.CENTER);
+	  Font font = new Font("Serif", Font.PLAIN, 18);
+	  levelNumberLabel.setFont(font);
+	  
+	  titleLabel = new JLabel("", JLabel.CENTER);
+	  titleLabel.setFont(font);
+	  descriptionLabel = new JLabel();
+	  
+	  panel.add(levelNumberLabel);
+	  panel.add(titleLabel);
+	  panel.add(descriptionLabel);
+	  
+  }
+  
+  public void updateLevelDescription(int levelNumber, String title, String description) {
+	  levelNumberLabel.setText("Level: " + levelNumber);
+	  titleLabel.setText(title);
+	  descriptionLabel.setText(description);
   }
 
   public void stateChanged(ChangeEvent e) {
