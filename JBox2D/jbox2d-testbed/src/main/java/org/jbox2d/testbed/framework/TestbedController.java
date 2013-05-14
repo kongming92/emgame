@@ -64,8 +64,8 @@ public class TestbedController implements Runnable {
   private UpdateBehavior updateBehavior;
   
   //boolean to tell whether user can still place charges or not
-  public boolean addQ = true;
-  public boolean addV = true;
+  public boolean setupMode = true;
+
   
   
   public TestbedController(TestbedModel argModel, TestbedPanel argPanel, UpdateBehavior behavior) {
@@ -305,19 +305,5 @@ public class TestbedController implements Runnable {
     } // end of run loop
   }
   
-  public void disableAddQ(){
-    addQ=false;
-  }
-  public void disableAddV(){
-    addV=false;
-  }
-  public void disableAddCharges(){
-    addQ=false;
-    addV=false;
-  }
-
-  public void enableAddCharges() {
-    addQ=true;
-    addV=true;
-  }
+ 
 }
