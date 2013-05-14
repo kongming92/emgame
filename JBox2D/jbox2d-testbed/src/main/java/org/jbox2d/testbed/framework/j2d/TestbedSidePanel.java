@@ -74,11 +74,10 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 
   public JComboBox tests;
 
-  private static JButton pauseButton = new JButton("Pause");
   private JButton resetButton = new JButton("Reset");
   private JButton quitButton = new JButton("Quit");
   private static JButton nextLevel = new JButton("Next Level");
-
+  private static JButton playButton = new JButton("Play");
 
   public enum Counter { 
 	  POSITIVES ("Positives"), NEGATIVES ("Negatives");
@@ -191,10 +190,11 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 
     add(middle, "Center");
 
-    pauseButton.setAlignmentX(CENTER_ALIGNMENT);
 
     resetButton.setAlignmentX(CENTER_ALIGNMENT);
 
+    playButton.setAlignmentX(CENTER_ALIGNMENT);
+    
     quitButton.setAlignmentX(CENTER_ALIGNMENT);
     
     nextLevel.setAlignmentX(CENTER_ALIGNMENT);
@@ -206,53 +206,42 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
     buttons1.setLayout(new GridLayout(0, 1));
     buttons1.add(resetButton);
 
-    JPanel buttons2 = new JPanel();
-    buttons2.setLayout(new GridLayout(0, 1));
-    buttons2.add(pauseButton);
+
 
 
     JPanel buttons3 = new JPanel();
     buttons3.setLayout(new GridLayout(0, 1));
-
     buttons3.add(quitButton);
     
     JPanel buttons4 = new JPanel();
     buttons4.setLayout(new GridLayout(0, 1));
-
     buttons4.add(nextLevel);
 
+    JPanel buttons5 = new JPanel();
+    buttons5.setLayout(new GridLayout(0, 1));
+    buttons5.add(playButton);
     
     buttonGroups.add(buttons1);
-    buttonGroups.add(buttons2);
-    buttonGroups.add(buttons3);
+    buttonGroups.add(buttons5);
     buttonGroups.add(buttons4);
-
+    buttonGroups.add(buttons3);
+    
+    
     add(buttonGroups, "South");
   }
 
   public void addListeners() {
-    pauseButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        if (model.getSettings().pause) {
-          model.getSettings().pause = false;
-          pauseButton.setText("Pause");
-        } else {
-          model.getSettings().pause = true;
-          pauseButton.setText("Resume");
-        }
-      }
-    });
-
     
 
     resetButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        model.getSettings().pause=false;
+        model.getSettings().pause=true;
         ContactManager.win=false;
         controller.resetTest();
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
-        pauseButton.setEnabled(true);
+        playButton.setEnabled(true);
+        controller.setupMode=true;
       }
     });
 
@@ -262,15 +251,23 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         System.exit(0);
       }
     });
+    playButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        controller.setupMode = false;
+        playButton.setEnabled(false);
+        model.getSettings().pause=false;
+      }
+    });
     nextLevel.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         controller.playTest(tests.getSelectedIndex()+1);
         nextLevel.setEnabled(false);
-        model.getSettings().pause=false;
+        model.getSettings().pause=true;
         ContactManager.win=false;
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
-        pauseButton.setEnabled(true);
+        playButton.setEnabled(true);
       }
     });
     
@@ -350,7 +347,5 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   public static void disableNextLevel(){
     nextLevel.setEnabled(false);
   }
-  public static void disablePauseButton(){
-    pauseButton.setEnabled(false);
-  }
+
 }
