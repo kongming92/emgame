@@ -72,6 +72,13 @@ import org.jbox2d.pooling.normal.DefaultWorldPool;
  * @author Daniel Murphy
  */
 public class World {
+	
+	public static final Color3f NEGATIVE_COLOR = new Color3f(0f,0f,.8f);
+	public static final Color3f POSITIVE_COLOR = new Color3f(.8f,0f,0f);
+	public static final Color3f STAR_COLOR = new Color3f(1f,1f,0f);	
+	public static final Color3f PLAYER_COLOR = new Color3f(1f,.5f,0f);
+			
+	
 	public static final float SPEED = 4;
 	public static final int WORLD_POOL_SIZE = 100;
 	public static final int WORLD_POOL_CONTAINER_SIZE = 10;
@@ -1540,11 +1547,13 @@ public class World {
 	private void drawShape(Fixture fixture, Transform xf, Color3f color) {
 	    //System.out.println("Fixture type: "+fixture.type);
 	    if (fixture.type==1) {
-	    	color = new Color3f(.8f,0f,0f);
+	    	color = POSITIVE_COLOR;
 	    } else if (fixture.type==-1) {
-	    	color = new Color3f(0f,0f,.8f);
+	    	color = NEGATIVE_COLOR;
 	    } else if (fixture.type==2) {
-	    	color = new Color3f(1f,1f,0f);
+	    	color = STAR_COLOR;
+	    } else if (fixture.type==3) {
+	    	color = PLAYER_COLOR;
 	    }
 		
 		switch (fixture.getType()) {
@@ -1573,7 +1582,7 @@ public class World {
 			}
 
 			m_debugDraw.drawSolidCircle(center, radius, axis, color);
-			if (fixture.type==1) {
+			if (fixture.type==1 || fixture.type==3) {
 				m_debugDraw.drawPositive(center, radius);
 		    } else if (fixture.type==-1) {
 		    	m_debugDraw.drawNegative(center, radius);

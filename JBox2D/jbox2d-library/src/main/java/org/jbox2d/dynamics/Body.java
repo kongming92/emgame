@@ -222,7 +222,11 @@ public class Body {
 		
 		//Holden
 		if (this instanceof Charge) {
-			fixture.type=(int) Math.signum(((Charge)this).charge);
+			if (isPlayer) {
+				fixture.type=3;
+			} else {
+				fixture.type=(int) Math.signum(((Charge)this).charge);				
+			}
 		} else if (this instanceof Star) {
 			fixture.type=2;
 		}
