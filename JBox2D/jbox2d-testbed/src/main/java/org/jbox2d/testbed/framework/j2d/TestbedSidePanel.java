@@ -108,8 +108,6 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 	  }
 	  public int updateCount(){
 	    updateCounter(this, count-1);
-	    System.out.println("Joanie ");
-	    System.out.println(getCount());
 	    return getCount();
 	  }
   };
@@ -279,6 +277,8 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         ContactManager.win=false;
         model.getDebugDraw().drawString(20,200, "", Color3f.WHITE);
         playButton.setEnabled(true);
+        controller.resetTest();
+        controller.enableAddCharges();
       }
     });
     
