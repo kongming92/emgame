@@ -75,7 +75,7 @@ public class Level extends TestbedTest {
 		return body2;
 	}
 	
-	private MagneticField createMagneticField(Vec2 position, float halfHeight, float halfWidth, float strength) {
+	private MagneticField createMagneticField(Vec2 position, float halfHeight, float halfWidth, float strength) throws SameLocationException {
 		//Make a box
 	    PolygonShape sd = new PolygonShape();
 	    sd.setAsBox(halfWidth, halfHeight);
@@ -106,11 +106,11 @@ public class Level extends TestbedTest {
 		return body2;
 	}
 	
-	private MagneticField createMagneticField(float minX, float minY, float maxX, float maxY, float strength) {
+	private MagneticField createMagneticField(float minX, float minY, float maxX, float maxY, float strength) throws SameLocationException {
 		return createMagneticField(new Vec2((minX+maxX)/2,(minY+maxY)/2),(maxY-minY)/2,(maxY-minY)/2,strength);
 	}
 	
-	private Star createStar(Vec2 position) {
+	private Star createStar(Vec2 position) throws SameLocationException {
 	  BodyDef bd2 = new BodyDef();
     bd2.position = position;
     bd2.type = BodyType.STATIC;
@@ -240,7 +240,11 @@ public class Level extends TestbedTest {
 						}
 						break;
 					case '*':
-						createStar(position);
+						try {
+							createStar(position);
+						} catch (SameLocationException e) {
+							e.printStackTrace();
+						}
 						break;
 					case 'l':
 					  //this is a vertical edge
@@ -251,10 +255,18 @@ public class Level extends TestbedTest {
 						createHorizEdge(position);
 						break;
 					case 'x':
-						createMagneticField(position, xRes, yRes,-B_STRENGTH);
+						try {
+							createMagneticField(position, xRes, yRes,-B_STRENGTH);
+						} catch (SameLocationException e) {
+							e.printStackTrace();
+						}
 						break;
 					case '.':
-						createMagneticField(position, xRes, yRes,B_STRENGTH);
+						try {
+							createMagneticField(position, xRes, yRes,B_STRENGTH);
+						} catch (SameLocationException e) {
+							e.printStackTrace();
+						}
 					case ' ':
 						//Do nothing
 					}
@@ -275,7 +287,11 @@ public class Level extends TestbedTest {
 				float c=scanner.nextInt();
 				float d=scanner.nextInt();
 				float str=scanner.nextInt();
-				createMagneticField(a,b,c,d,str);
+				try {
+					createMagneticField(a,b,c,d,str);
+				} catch (SameLocationException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		scanner.close();

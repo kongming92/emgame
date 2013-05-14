@@ -105,7 +105,7 @@ public class World {
 	private int m_bodyCount;
 	private int m_jointCount;
 	
-	private Set<Vec2> m_chargePointSet;
+	private Set<Vec2> m_pointSet;
 
 	private final Vec2 m_gravity = new Vec2();
 	private boolean m_allowSleep;
@@ -164,7 +164,7 @@ public class World {
 		m_bodyCount = 0;
 		m_jointCount = 0;
 		
-		m_chargePointSet = new HashSet<Vec2>();
+		m_pointSet = new HashSet<Vec2>();
 
 		m_warmStarting = true;
 		m_continuousPhysics = true;
@@ -347,6 +347,18 @@ public class World {
 		return b;
 	}
 	
+	private boolean initCheck(Vec2 position) throws SameLocationException {
+		if (m_pointSet.contains(position)) {
+			System.err.println("Error: adding to already occupied location");
+			throw new SameLocationException(position.toString());
+		} 
+		assert (isLocked() == false);
+		if (isLocked()) {
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Adds a charge
 	 * @param def
@@ -354,39 +366,29 @@ public class World {
 	 * @throws SameLocationException 
 	 */
 	public Charge createCharge(BodyDef def) throws SameLocationException {
-		assert (isLocked() == false);
-		if (isLocked()) {
-			return null;
+		if (initCheck(def.position)) {
+			m_pointSet.add(def.position);				
+			Body b = new Charge(def, this);
+			return (Charge) initBody(b);
 		}
-		if (m_chargePointSet.contains(def.position)) {
-			System.err.println("Error: adding to already occupied location");
-			throw new SameLocationException(def.position.toString());
-		}
-		m_chargePointSet.add(def.position);				
-		// TODO djm pooling
-		Body b = new Charge(def, this);
-		return (Charge) initBody(b);
+		return null;
 	}
 
-	public MagneticField createMagneticField(BodyDef def) {
-		assert (isLocked() == false);
-		if (isLocked()) {
-			return null;
+	public MagneticField createMagneticField(BodyDef def) throws SameLocationException {
+		if (initCheck(def.position)) {
+			m_pointSet.add(def.position);
+			Body b = new MagneticField(def, this);
+			return (MagneticField) initBody(b);
 		}
-		// TODO djm pooling
-		Body b = new MagneticField(def, this);
-
-		return (MagneticField) initBody(b);
+		return null;
 	}
-	 public Star createStar(BodyDef def) {
-	    assert (isLocked() == false);
-	    if (isLocked()) {
-	      return null;
+	 public Star createStar(BodyDef def) throws SameLocationException {
+	    if (initCheck(def.position)) {
+	    	m_pointSet.add(def.position);
+	    	Body b = new Star(def, this);
+		    return (Star) initBody(b);
 	    }
-	    // TODO djm pooling
-	    Body b = new Star(def, this);
-
-	    return (Star) initBody(b);
+	    return null;
 	  }
 
 	/**

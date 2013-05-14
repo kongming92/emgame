@@ -781,7 +781,7 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	      charge = null;
 	    }
 	    if (model.controller.setupMode){
-	    	
+	  
 		    try {
 		    	sameLocationError = false;
 		    	if ( c == POSITIVE_CHARGE && Counter.POSITIVES.getCount() > 0) {

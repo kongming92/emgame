@@ -59,8 +59,4 @@ public class TestList {
     model.addTest(new Level("levels/spiral.txt"));
     model.addTest(new Level("levels/evil.txt"));
     
-
-    //model.addTest(new DragDrop());
-
-  }
 }
