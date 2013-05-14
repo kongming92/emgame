@@ -88,6 +88,9 @@ public abstract class TestbedTest
   protected static final long GROUND_BODY_TAG = 1897450239847L;
   protected static final long BOMB_TAG = 98989788987L;
   protected static final long MOUSE_JOINT_TAG = 4567893364789L;
+  
+  protected float xRes;
+  protected float yRes;
 
   private static final Logger log = LoggerFactory.getLogger(TestbedTest.class);
 
@@ -765,8 +768,6 @@ public abstract class TestbedTest
 	   * @return
 	   */
 	  private Vec2 snapWorldPtToGrid(Vec2 worldPt) {
-		  int xRes = 2; // width of a grid rect
-		  int yRes = 2; // height of a grid rect
 		  Vec2 newPt = new Vec2(worldPt);
 		  newPt.x = xRes * Math.round(worldPt.x / (float)xRes);
 		  newPt.y = yRes * Math.round(worldPt.y / (float)yRes);

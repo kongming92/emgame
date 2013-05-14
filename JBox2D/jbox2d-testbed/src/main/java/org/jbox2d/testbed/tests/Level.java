@@ -27,8 +27,6 @@ public class Level extends TestbedTest {
 	private static final int B_STRENGTH = 30;
 	private float xMin;
 	private float yMax;
-	private float xRes;
-	private float yRes;
 	private float r;
 	private float v_x;
 	private float v_y;
