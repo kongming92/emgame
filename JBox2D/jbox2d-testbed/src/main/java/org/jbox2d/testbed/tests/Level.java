@@ -86,7 +86,11 @@ public class Level extends TestbedTest {
 		fd2.filter.categoryBits=0x0008;
 		fd2.filter.maskBits=0x0000;//can collide with nothing
 		fd2.isSensor=true;//senses when charge is in the magnetic field
-		fd2.realtype = Fixture.Type.MAGNETIC_FIELD_IN;
+		if (strength>0) {
+			fd2.realtype = Fixture.Type.MAGNETIC_FIELD_OUT;
+		} else {
+			fd2.realtype = Fixture.Type.MAGNETIC_FIELD_IN;
+		}
 		
 		//Make the BodyDef, set its position, and set it as static
 		BodyDef bd2 = new BodyDef();

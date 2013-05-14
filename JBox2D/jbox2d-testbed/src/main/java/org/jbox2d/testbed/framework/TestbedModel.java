@@ -29,7 +29,6 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.testbed.framework.j2d.TestbedSidePanel.Counter;
 
 /**
  * Model for the testbed

@@ -1,0 +1,22 @@
+xMin= -10
+yMax= 10
+xRes= 2
+yRes= 2
+r= 1
+v_x= 0
+v_y= 0
+positives= 0
+negatives= 4
+canSetVelocity= false
+
+\\\\\\\\\\\\\\\\
+        *      \
+               \
+               \             
+   -        -  \
+               \
+               \             
+       o       \
+\\\\\\\\\\\\\\\\
+ 
+                          
