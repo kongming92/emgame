@@ -18,6 +18,8 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.MagneticField;
 import org.jbox2d.dynamics.Star;
 import org.jbox2d.testbed.framework.TestbedTest;
+import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
+import org.jbox2d.testbed.framework.j2d.TestbedSidePanel.Counter;
 
 
 public class Level extends TestbedTest {
@@ -29,8 +31,8 @@ public class Level extends TestbedTest {
 	private float v_x;
 	private float v_y;
 	private String levelFile;
-	private float positives;
-	private float negatives;
+	private static float positives;
+	private static float negatives;
 	//are you allowed to set the velocity?
 	private boolean canSetVelocity;
 	
@@ -84,7 +86,11 @@ public class Level extends TestbedTest {
 		fd2.filter.categoryBits=0x0008;
 		fd2.filter.maskBits=0x0000;//can collide with nothing
 		fd2.isSensor=true;//senses when charge is in the magnetic field
-		fd2.realtype = Fixture.Type.MAGNETIC_FIELD_IN;
+		if (strength>0) {
+			fd2.realtype = Fixture.Type.MAGNETIC_FIELD_OUT;
+		} else {
+			fd2.realtype = Fixture.Type.MAGNETIC_FIELD_IN;
+		}
 		
 		//Make the BodyDef, set its position, and set it as static
 		BodyDef bd2 = new BodyDef();
@@ -193,7 +199,7 @@ public class Level extends TestbedTest {
 				System.out.println(scanner.next());
 				setPositives(scanner.nextFloat());
 				System.out.println(scanner.next());
-				negatives=scanner.nextFloat();
+				setNegatives(scanner.nextFloat());
 				System.out.println(scanner.next());
 				canSetVelocity=scanner.nextBoolean();
 				while (line.equals("") || line.charAt(0)=='\\') {
@@ -271,24 +277,26 @@ public class Level extends TestbedTest {
 		return "Level "+levelFile;
 	}
 
-	public float getPositives() {
+	public static float getPositives() {
 		return positives;
 	}
 
 	public void setPositives(float positives) {
 		this.positives = positives;
+		TestbedSidePanel.updateCounter(Counter.POSITIVES, (int)positives);
 	}
 	
 	public void decrementPositives() {
 		this.positives--;
 	}
 	
-	public float getNegatives() {
+	public static float getNegatives() {
 		return negatives;
 	}
 
 	public void setNegatives(float negatives) {
 		this.negatives = negatives;
+		TestbedSidePanel.updateCounter(Counter.NEGATIVES, (int)negatives);
 	}
 	
 	public void decrementNegatives() {

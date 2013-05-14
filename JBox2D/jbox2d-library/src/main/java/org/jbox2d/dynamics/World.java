@@ -695,17 +695,6 @@ public class World {
 	}
 
 	/**
-	 * For testing purposes
-	 */
-	private void printAllPositions() {
-		Body b=m_bodyList;
-		while (b!=null) {
-			System.out.println("Position:"+b.m_xf.p);
-			b=b.m_next;
-		}
-	}
-
-	/**
 	 * Call this after you are done with time steps to clear the forces. You normally call this after
 	 * each call to Step, unless you are performing sub-steps. By default, forces will be
 	 * automatically cleared, so you don't need to call this function.
@@ -1604,6 +1593,8 @@ public class World {
 			}
 			if (fixture.getRealType() == Fixture.Type.MAGNETIC_FIELD_IN) {
 				m_debugDraw.drawBFieldIn(vertices, vertexCount, color);
+			} else if (fixture.getRealType() == Fixture.Type.MAGNETIC_FIELD_OUT) {
+				m_debugDraw.drawBFieldOut(vertices, vertexCount, color);
 			} else {
 				m_debugDraw.drawSolidPolygon(vertices, vertexCount, color);
 			}

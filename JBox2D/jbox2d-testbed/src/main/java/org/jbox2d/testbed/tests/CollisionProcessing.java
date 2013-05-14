@@ -178,11 +178,7 @@ public class CollisionProcessing extends TestbedTest {
     // Sort the nuke array to group duplicates.
     // Arrays.sort(nuke);
 
-    // Destroy the bodies, skipping duplicates.
-    for (Body b : nuke) {
-
-      
-    }
+   
   }
 
   @Override
