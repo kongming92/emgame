@@ -54,8 +54,6 @@ import org.jbox2d.testbed.framework.TestbedController;
 import org.jbox2d.testbed.framework.TestbedModel;
 import org.jbox2d.testbed.framework.TestbedModel.ListItem;
 import org.jbox2d.testbed.framework.TestbedSetting;
-import org.jbox2d.testbed.framework.TestbedSetting.SettingType;
-import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 
 
@@ -130,8 +128,6 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   public void initComponents() {
     setLayout(new BorderLayout());
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-    TestbedSettings settings = model.getSettings();
 
     JPanel top = new JPanel();
     top.setLayout(new GridLayout(0, 1));
@@ -306,35 +302,6 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
   public static void updateCounter(Counter counter, int count) {
 	  counter.setCount(count);
 	  counter.updateLabel();
-  }
-  
-  
-  private void addSettings(JPanel argPanel, TestbedSettings argSettings, SettingType argIgnore) {
-    for (TestbedSetting setting : argSettings.getSettings()) {
-      if (setting.settingsType == argIgnore) {
-        continue;
-      }
-      switch (setting.constraintType) {
-        case RANGE:
-          JLabel text = new JLabel(setting.name + ": " + setting.value);
-          JSlider slider = new JSlider(setting.min, setting.max, setting.value);
-          slider.setMaximumSize(new Dimension(200, 20));
-          slider.addChangeListener(this);
-          slider.setName(setting.name);
-          slider.putClientProperty(SETTING_TAG, setting);
-          slider.putClientProperty(LABEL_TAG, text);
-          argPanel.add(text);
-          argPanel.add(slider);
-          break;
-        case BOOLEAN:
-          JCheckBox checkbox = new JCheckBox(setting.name);
-          checkbox.setSelected(setting.enabled);
-          checkbox.addChangeListener(this);
-          checkbox.putClientProperty(SETTING_TAG, setting);
-          argPanel.add(checkbox);
-          break;
-      }
-    }
   }
   
   private void addLevelDescriptionArea(JPanel panel) {

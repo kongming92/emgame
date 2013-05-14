@@ -695,17 +695,6 @@ public class World {
 	}
 
 	/**
-	 * For testing purposes
-	 */
-	private void printAllPositions() {
-		Body b=m_bodyList;
-		while (b!=null) {
-			System.out.println("Position:"+b.m_xf.p);
-			b=b.m_next;
-		}
-	}
-
-	/**
 	 * Call this after you are done with time steps to clear the forces. You normally call this after
 	 * each call to Step, unless you are performing sub-steps. By default, forces will be
 	 * automatically cleared, so you don't need to call this function.

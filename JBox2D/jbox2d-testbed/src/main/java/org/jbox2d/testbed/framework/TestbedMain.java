@@ -27,8 +27,8 @@
 package org.jbox2d.testbed.framework;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.UIManager;
+
 import org.jbox2d.testbed.framework.TestbedController.UpdateBehavior;
 import org.jbox2d.testbed.framework.j2d.TestPanelJ2D;
 import org.slf4j.Logger;

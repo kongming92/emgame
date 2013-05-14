@@ -1,12 +1,12 @@
 xMin= -20
 yMax= 30
-xRes= 2
-yRes= 2
+xRes= 5
+yRes= 5
 r= 1
 v_x= 0
 v_y= 0
-positives= 0
-negatives= 1
+positives= 6
+negatives= 6
 canSetVelocity= false
 
 \\\\\\\\\\\\\\\\\\\\

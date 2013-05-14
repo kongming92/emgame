@@ -27,11 +27,9 @@
 package org.jbox2d.testbed.framework;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
