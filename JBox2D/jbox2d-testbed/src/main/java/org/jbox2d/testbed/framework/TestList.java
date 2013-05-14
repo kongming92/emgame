@@ -46,19 +46,20 @@ public class TestList {
     
     model.addTest(new Level("levels/bfield1.txt"));
     model.addTest(new Level("levels/bfield2.txt"));
-
+    model.addTest(new Level("levels/bfield3.txt"));
+   
     model.addTest(new Level("levels/nemesis.txt"));
     model.addTest(new Level("levels/needle.txt"));
     model.addTest(new Level("levels/arc.txt"));   
         
     model.addTest(new Level("levels/capacitor.txt"));
-        
+    model.addTest(new Level("levels/capacitor2.txt"));
+
+    model.addTest(new Level("levels/weave.txt"));
+    model.addTest(new Level("levels/spiral.txt"));
     model.addTest(new Level("levels/evil.txt"));
     
-    model.addTest(new Level("levels/level3.txt"));    
-    model.addTest(new Level("levels/bfield1.txt"));
-    
-    model.addTest(new Level("levels/tricky.txt"));
+
     //model.addTest(new DragDrop());
 
   }
