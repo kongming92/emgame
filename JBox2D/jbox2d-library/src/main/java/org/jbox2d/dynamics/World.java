@@ -23,6 +23,9 @@
  ******************************************************************************/
 package org.jbox2d.dynamics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jbox2d.callbacks.ContactFilter;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.callbacks.DebugDraw;
@@ -98,9 +101,11 @@ public class World {
 
 	private Body m_bodyList;
 	private Joint m_jointList;
-
+	
 	private int m_bodyCount;
 	private int m_jointCount;
+	
+	private Set<Vec2> m_chargePointSet;
 
 	private final Vec2 m_gravity = new Vec2();
 	private boolean m_allowSleep;
@@ -158,6 +163,8 @@ public class World {
 
 		m_bodyCount = 0;
 		m_jointCount = 0;
+		
+		m_chargePointSet = new HashSet<Vec2>();
 
 		m_warmStarting = true;
 		m_continuousPhysics = true;
@@ -319,7 +326,6 @@ public class World {
 		}
 		// TODO djm pooling
 		Body b = new Body(def, this);
-
 		return initBody(b);
 	}
 	
@@ -345,20 +351,23 @@ public class World {
 	 * Adds a charge
 	 * @param def
 	 * @return
+	 * @throws SameLocationException 
 	 */
-	public Charge createCharge(BodyDef def) {
+	public Charge createCharge(BodyDef def) throws SameLocationException {
 		assert (isLocked() == false);
 		if (isLocked()) {
 			return null;
 		}
+		if (m_chargePointSet.contains(def.position)) {
+			System.err.println("Error: adding to already occupied location");
+			throw new SameLocationException(def.position.toString());
+		}
+		m_chargePointSet.add(def.position);				
 		// TODO djm pooling
 		Body b = new Charge(def, this);
-
 		return (Charge) initBody(b);
 	}
 
-	//public Wall createWall
-	
 	public MagneticField createMagneticField(BodyDef def) {
 		assert (isLocked() == false);
 		if (isLocked()) {

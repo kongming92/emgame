@@ -59,6 +59,7 @@ import org.jbox2d.dynamics.ContactManager;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.Profile;
+import org.jbox2d.dynamics.SameLocationException;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.dynamics.joints.Joint;
@@ -142,6 +143,8 @@ public abstract class TestbedTest
   
   public static final float POSITIVE_CHARGE = 5.0f;
   public static final float NEGATIVE_CHARGE = -5.0f;
+  
+  public boolean sameLocationError = false;
 
   public TestbedTest() {
     inputQueue = new LinkedList<QueueItem>();
@@ -187,6 +190,7 @@ public abstract class TestbedTest
   }
 
   public void init(TestbedModel argModel) {
+	  System.out.println("BLAHBLAHBLAH");
     model = argModel;
     destructionListener = new DestructionListener() {
 
@@ -198,7 +202,6 @@ public abstract class TestbedTest
     };
 
     m_world = new World(new Vec2(0,0));
-    
 
     BodyDef bodyDef = new BodyDef();
     groundBody = m_world.createBody(bodyDef);
@@ -665,6 +668,12 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
       debugDraw.drawString(5, m_textLine,
           "Click while holding w to drop negative charges.", Color3f.WHITE);
       m_textLine += 15;
+      
+      if (sameLocationError) {
+    	  debugDraw.drawString(5, m_textLine,
+    	          "ERROR: Something already exists there!", Color3f.RED);
+    	  m_textLine += 15;
+      }
     }
 
     if (!textList.isEmpty()) {
@@ -772,18 +781,24 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	      charge = null;
 	    }
 	    if (model.controller.setupMode){
-	    if ( c == POSITIVE_CHARGE && Counter.POSITIVES.getCount() > 0) {
-	      createCharge(position, BodyType.STATIC, c);
-	      TestbedSidePanel.updateCounter(Counter.POSITIVES, Counter.POSITIVES.getCount() - 1);
-	    }
-	    else if ( c == NEGATIVE_CHARGE && Counter.NEGATIVES.getCount() > 0){
-	      createCharge(position, BodyType.STATIC, c);
-	      TestbedSidePanel.updateCounter(Counter.NEGATIVES, Counter.NEGATIVES.getCount() - 1);
-	    }
+	    	
+		    try {
+		    	sameLocationError = false;
+		    	if ( c == POSITIVE_CHARGE && Counter.POSITIVES.getCount() > 0) {
+				      createCharge(position, BodyType.STATIC, c);
+				      TestbedSidePanel.updateCounter(Counter.POSITIVES, Counter.POSITIVES.getCount() - 1);
+				    } else if ( c == NEGATIVE_CHARGE && Counter.NEGATIVES.getCount() > 0){
+			      createCharge(position, BodyType.STATIC, c);
+			      TestbedSidePanel.updateCounter(Counter.NEGATIVES, Counter.NEGATIVES.getCount() - 1);
+			    }
+		    } catch (SameLocationException e) {
+		    	sameLocationError = true;
+		    }
+		    
 	    }
 	  }
   
-    protected Charge createCharge(Vec2 position, BodyType type, float charge, float r, float density) {
+    protected Charge createCharge(Vec2 position, BodyType type, float charge, float r, float density) throws SameLocationException {
 		//Make a circle
 		CircleShape c2 = new CircleShape();
 		c2.setRadius(r);
@@ -808,15 +823,16 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 			fd2.filter.maskBits=0x0001;//can only collide with player (1)
 		}
 		//now create a Body in the world, and put the bodydef and the fixturedef into it
+
 		Charge body2 = getWorld().createCharge(bd2);
-		//set the charge to be negative
 		body2.charge=charge;
 		body2.isPlayer=isPlayer;
 		body2.createFixture(fd2);
 		return body2;
+		
     }
   
-	private Charge createCharge(Vec2 position, BodyType type, float charge) {
+	private Charge createCharge(Vec2 position, BodyType type, float charge) throws SameLocationException {
 		return createCharge(position, type, charge, 1, 10);
 		
 	}

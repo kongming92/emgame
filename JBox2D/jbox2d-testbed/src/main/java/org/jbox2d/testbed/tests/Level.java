@@ -16,6 +16,7 @@ import org.jbox2d.dynamics.Charge;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.MagneticField;
+import org.jbox2d.dynamics.SameLocationException;
 import org.jbox2d.dynamics.Star;
 import org.jbox2d.testbed.framework.TestbedTest;
 import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
@@ -63,13 +64,12 @@ public class Level extends TestbedTest {
 		initFromFile(levelFile);
 	}
 
-	private Charge createCharge(Vec2 position, BodyType type, float charge) {
+	private Charge createCharge(Vec2 position, BodyType type, float charge) throws SameLocationException {
 		Charge chargeObject = super.createCharge(position, type, charge, r, DENSITY);
-	//	chargeObject.isPlayer = 
 		return chargeObject;
 	}
 
-	private Charge createCharge(Vec2 position, BodyType type, float charge, Vec2 velocity) {
+	private Charge createCharge(Vec2 position, BodyType type, float charge, Vec2 velocity) throws SameLocationException {
 		Charge body2 = createCharge(position,type,charge);
 		body2.setLinearVelocity(velocity);
 		return body2;
@@ -219,16 +219,25 @@ public class Level extends TestbedTest {
 
 					switch (line.charAt(i)) {
 					case '+':
-						createCharge(position, BodyType.STATIC, 1);
-						//putNew=true;
+						try {
+							createCharge(position, BodyType.STATIC, 1);
+						} catch (SameLocationException e) {
+							e.printStackTrace();
+						} 
 						break;
 					case '-':
-						createCharge(position, BodyType.STATIC, -1);
-						//putNew=true;
+						try {
+							createCharge(position, BodyType.STATIC, -1);
+						} catch (SameLocationException e) {
+							e.printStackTrace();
+						}
 						break;
 					case 'o':
-						createCharge(position, BodyType.DYNAMIC, 1, new Vec2(v_x,v_y));
-						//putNew=true;
+						try {
+							createCharge(position, BodyType.DYNAMIC, 1, new Vec2(v_x,v_y));
+						} catch (SameLocationException e) {
+							e.printStackTrace();
+						}
 						break;
 					case '*':
 						createStar(position);
