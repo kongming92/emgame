@@ -1604,6 +1604,8 @@ public class World {
 			}
 			if (fixture.getRealType() == Fixture.Type.MAGNETIC_FIELD_IN) {
 				m_debugDraw.drawBFieldIn(vertices, vertexCount, color);
+			} else if (fixture.getRealType() == Fixture.Type.MAGNETIC_FIELD_OUT) {
+				m_debugDraw.drawBFieldOut(vertices, vertexCount, color);
 			} else {
 				m_debugDraw.drawSolidPolygon(vertices, vertexCount, color);
 			}
