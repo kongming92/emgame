@@ -29,6 +29,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.testbed.framework.j2d.TestbedSidePanel.Counter;
 
 /**
  * Model for the testbed
@@ -50,6 +51,8 @@ public class TestbedModel {
   private int currTestIndex = -1;
   private TestbedTest runningTest;
   TestbedController controller;
+  public Counter posCounter;
+  public Counter negCounter;
   
   public TestbedModel() {
   }
@@ -208,5 +211,15 @@ public class TestbedModel {
 
   public static interface TestChangedListener {
     public void testChanged(TestbedTest argTest, int argIndex);
+  }
+  public void updatePosCounter(){
+    if (posCounter.updateCount()==0){
+      controller.disableAddQ();
+    }
+  }
+  public void updateNegCounter(){
+    if (negCounter.updateCount()==0){
+      controller.disableAddV();
+    }
   }
 }
