@@ -91,6 +91,9 @@ public abstract class TestbedTest
   protected static final long GROUND_BODY_TAG = 1897450239847L;
   protected static final long BOMB_TAG = 98989788987L;
   protected static final long MOUSE_JOINT_TAG = 4567893364789L;
+  
+  protected float xRes;
+  protected float yRes;
 
   private static final Logger log = LoggerFactory.getLogger(TestbedTest.class);
 
@@ -657,18 +660,13 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
     if (settings.getSetting(TestbedSettings.DrawHelp).enabled) {
       debugDraw.drawString(5, m_textLine, "Help", color4);
       m_textLine += 15;
-      debugDraw.drawString(5, m_textLine, "Click and drag the left mouse button to move objects.",
+      debugDraw.drawString(5, m_textLine, "Click while holding q to drop positive charges.",
           Color3f.WHITE);
       m_textLine += 15;
 
       debugDraw.drawString(5, m_textLine,
-          "Click and drag the right mouse button to move the view.", Color3f.WHITE);
+          "Click while holding w to drop negative charges.", Color3f.WHITE);
       m_textLine += 15;
-      debugDraw.drawString(5, m_textLine, "Scroll to zoom in/out.", Color3f.WHITE);
-      m_textLine += 15;
-      debugDraw.drawString(5, m_textLine, "Press '[' or ']' to change tests, and 'r' to restart.",
-          Color3f.WHITE);
-      m_textLine += 20;
     }
 
     if (!textList.isEmpty()) {
@@ -718,22 +716,25 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
       debugDraw.drawString(20, 200, "You Win!!!!!",color6);
       settings.pause=true;
       TestbedSidePanel.enableNextLevel();
-      TestbedSidePanel.disablePauseButton();
       
     }
     
   }
   
   public void queueQMouse(Vec2 p) { // ryan
+    if (model.controller.setupMode){
 	    synchronized (inputQueue) {
 	      inputQueue.addLast(new QueueItem(QueueItemType.QMouse, p));
 	    }
+    }
   }
   
   public void queueWMouse(Vec2 p) {
-	  synchronized (inputQueue) {
-		  inputQueue.addLast(new QueueItem(QueueItemType.WMouse, p));
-	  }
+    if (model.controller.setupMode){
+      synchronized (inputQueue) {
+        inputQueue.addLast(new QueueItem(QueueItemType.WMouse, p));
+      }
+    }
   }
 
   public void qMouse(Vec2 p) { //ryan
@@ -779,8 +780,7 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	    createCharge(position, BodyType.STATIC, c);
 	  }
   
-	private Charge createCharge(Vec2 position, BodyType type, float charge) {
-		float r=1;
+    protected Charge createCharge(Vec2 position, BodyType type, float charge, float r, float density) {
 		//Make a circle
 		CircleShape c2 = new CircleShape();
 		c2.setRadius(r);
@@ -808,6 +808,11 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 		body2.charge=charge;
 		body2.createFixture(fd2);
 		return body2;
+    }
+  
+	private Charge createCharge(Vec2 position, BodyType type, float charge) {
+		return createCharge(position, type, charge, 1, 10);
+		
 	}
 
 
@@ -817,8 +822,6 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	   * @return
 	   */
 	  private Vec2 snapWorldPtToGrid(Vec2 worldPt) {
-		  int xRes = 2; // width of a grid rect
-		  int yRes = 2; // height of a grid rect
 		  Vec2 newPt = new Vec2(worldPt);
 		  newPt.x = xRes * Math.round(worldPt.x / (float)xRes);
 		  newPt.y = yRes * Math.round(worldPt.y / (float)yRes);

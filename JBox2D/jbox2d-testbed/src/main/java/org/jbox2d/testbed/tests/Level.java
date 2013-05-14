@@ -15,6 +15,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Charge;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.MagneticField;
 import org.jbox2d.dynamics.Star;
@@ -24,10 +25,9 @@ import org.jbox2d.common.Color3f;
 
 public class Level extends TestbedTest {
 
+	private static final int B_STRENGTH = 30;
 	private float xMin;
 	private float yMax;
-	private float xRes;
-	private float yRes;
 	private float r;
 	private float v_x;
 	private float v_y;
@@ -65,37 +65,7 @@ public class Level extends TestbedTest {
 	}
 
 	private Charge createCharge(Vec2 position, BodyType type, float charge) {
-		//Make a circle
-		CircleShape c2 = new CircleShape();
-		c2.setRadius(r);
-		//Make a fixture
-		FixtureDef fd2 = new FixtureDef();   
-		//Put the circle in the fixture and set density
-		fd2.shape=c2;
-		fd2.density = DENSITY;
-		//Make the BodyDef, set its position, and set it as dynamic
-		BodyDef bd2 = new BodyDef();
-		bd2.position = position;
-		bd2.type = type;
-		boolean isPlayer=false;
-		if (type==BodyType.DYNAMIC) {
-			//then it's the player's charge
-			fd2.filter.categoryBits=0x0001;
-			fd2.filter.maskBits=0x0007;//can collide with walls (4), charges (2), self (1)
-			isPlayer=true;
-			
-		} else {
-			//it's static
-			fd2.filter.categoryBits=0x0002;
-			fd2.filter.maskBits=0x0001;//can only collide with player (1)
-		}
-		//now create a Body in the world, and put the bodydef and the fixturedef into it
-		Charge body2 = getWorld().createCharge(bd2);
-		//set the charge to be negative
-		body2.charge=charge;
-		body2.createFixture(fd2);
-		body2.isPlayer=isPlayer;
-		return body2;
+		return super.createCharge(position, type, charge, r, DENSITY);
 	}
 
 	private Charge createCharge(Vec2 position, BodyType type, float charge, Vec2 velocity) {
@@ -115,6 +85,8 @@ public class Level extends TestbedTest {
 		fd2.filter.categoryBits=0x0008;
 		fd2.filter.maskBits=0x0000;//can collide with nothing
 		fd2.isSensor=true;//senses when charge is in the magnetic field
+		fd2.realtype = Fixture.Type.MAGNETIC_FIELD_IN;
+		
 		//Make the BodyDef, set its position, and set it as static
 		BodyDef bd2 = new BodyDef();
 		bd2.position = position;
@@ -128,6 +100,11 @@ public class Level extends TestbedTest {
 		body2.setbField(strength);
 		return body2;
 	}
+	
+	private MagneticField createMagneticField(float minX, float minY, float maxX, float maxY, float strength) {
+		return createMagneticField(new Vec2((minX+maxX)/2,(minY+maxY)/2),(maxY-minY)/2,(maxY-minY)/2,strength);
+	}
+	
 	private Star createStar(Vec2 position) {
 	  BodyDef bd2 = new BodyDef();
     bd2.position = position;
@@ -144,11 +121,11 @@ public class Level extends TestbedTest {
     
     //starting to make the shape
     PolygonShape poly=new PolygonShape();
-    Vec2 [] pointA = { new Vec2( 2f, 1.15f), new Vec2( -2, 1.15f),new Vec2(0,-2.3f)  };
+    Vec2 [] pointA = { new Vec2( 1f, .67f), new Vec2( -1, .67f),new Vec2(0,-1.15f)  };
     poly.set(pointA, 3);
     
     PolygonShape poly2=new PolygonShape();
-    Vec2 [] pointB={ new Vec2( 2f, -1.15f), new Vec2( -2, -1.15f),new Vec2(0,2.3f)  };
+    Vec2 [] pointB={ new Vec2( 1f, -.67f), new Vec2( -1, -.67f),new Vec2(0,1.15f)  };
     poly2.set(pointB, 3);
    
   
@@ -241,18 +218,21 @@ public class Level extends TestbedTest {
 						//putNew=true;
 						break;
 					case '*':
-            createStar(position);
-            break;
+						createStar(position);
+						break;
 					case 'l':
 					  //this is a vertical edge
-            createVertEdge(position);
-            break;
+						createVertEdge(position);
+						break;
 					case '_':
 					  //this is a horizontal edge
-            createHorizEdge(position);
-            break;
+						createHorizEdge(position);
+						break;
 					case 'x':
-						createMagneticField(position, xRes/2, yRes/2,10);
+						createMagneticField(position, xRes, yRes,-B_STRENGTH);
+						break;
+					case '.':
+						createMagneticField(position, xRes, yRes,B_STRENGTH);
 					case ' ':
 						//Do nothing
 					}
@@ -264,6 +244,17 @@ public class Level extends TestbedTest {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		if (scanner.hasNext() && scanner.nextLine().equals("Magnetic fields:")) {
+			while (scanner.hasNext()) {
+				float a=scanner.nextInt();
+				float b=scanner.nextInt();
+				float c=scanner.nextInt();
+				float d=scanner.nextInt();
+				float str=scanner.nextInt();
+				createMagneticField(a,b,c,d,str);
+			}
 		}
 		scanner.close();
 	}
