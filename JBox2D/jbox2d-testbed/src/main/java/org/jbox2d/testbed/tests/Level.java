@@ -15,6 +15,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Charge;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.MagneticField;
 import org.jbox2d.dynamics.Star;
@@ -115,6 +116,8 @@ public class Level extends TestbedTest {
 		fd2.filter.categoryBits=0x0008;
 		fd2.filter.maskBits=0x0000;//can collide with nothing
 		fd2.isSensor=true;//senses when charge is in the magnetic field
+		fd2.realtype = Fixture.Type.MAGNETIC_FIELD_IN;
+		
 		//Make the BodyDef, set its position, and set it as static
 		BodyDef bd2 = new BodyDef();
 		bd2.position = position;

@@ -1587,7 +1587,7 @@ public class World {
 				m_debugDraw.drawPositive(center, radius);
 		    } else if (fixture.type==-1) {
 		    	m_debugDraw.drawNegative(center, radius);
-		    }
+		    } 
 		}
 		break;
 
@@ -1601,8 +1601,11 @@ public class World {
 				// vertices[i] = Mul(xf, poly.m_vertices[i]);
 				Transform.mulToOutUnsafe(xf, poly.m_vertices[i], vertices[i]);
 			}
-
-			m_debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+			if (fixture.getRealType() == Fixture.Type.MAGNETIC_FIELD_IN) {
+				m_debugDraw.drawBFieldIn(vertices, vertexCount, color);
+			} else {
+				m_debugDraw.drawSolidPolygon(vertices, vertexCount, color);
+			}
 		}
 		break;
 		case EDGE: {

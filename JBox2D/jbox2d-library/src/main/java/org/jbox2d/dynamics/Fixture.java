@@ -48,6 +48,9 @@ import org.jbox2d.dynamics.contacts.ContactEdge;
 public class Fixture {
 	//-1 if negative, +1 if positive, 0 none, +2 star
 
+	public enum Type { NONE, MAGNETIC_FIELD_IN };
+	
+	public Type m_realtype;
 	public int type;
 
 	public float m_density;
@@ -77,6 +80,7 @@ public class Fixture {
 		m_proxyCount = 0;
 		m_shape = null;
 		m_filter = new Filter();
+		m_realtype = Type.NONE;
 	}
 
 	/**
@@ -86,6 +90,10 @@ public class Fixture {
 	 */
 	public ShapeType getType() {
 		return m_shape.getType();
+	}
+	
+	public Fixture.Type getRealType() {
+		return m_realtype;
 	}
 
 	/**
@@ -321,6 +329,7 @@ public class Fixture {
 		m_userData = def.userData;
 		m_friction = def.friction;
 		m_restitution = def.restitution;
+		m_realtype = def.realtype;
 
 		m_body = body;
 		m_next = null;

@@ -28,6 +28,9 @@ package org.jbox2d.testbed.framework.j2d;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.TexturePaint;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.collision.AABB;
@@ -125,7 +128,6 @@ public class DebugDrawJ2D extends DebugDraw {
 
   @Override
   public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {
-
     // inside
     Graphics2D g = getGraphics();
     int[] xInts = xIntsPool.get(vertexCount);
@@ -161,6 +163,46 @@ public class DebugDrawJ2D extends DebugDraw {
 	  p1 = new Vec2(center.x, center.y - radius/2);
 	  p2 = new Vec2(center.x, center.y + radius/2);
 	  drawSegment(p1, p2, new Color3f(1, 1, 1));
+  }
+  
+  /**
+   * Draws a grid of x's on top of the rectangle to represent a B-field
+   * going into the page.
+   * @param center
+   * @param radius
+   */
+  @Override
+  public void drawBFieldIn(Vec2[] vertices, int vertexCount, Color3f color) {
+	  Graphics2D g = getGraphics();
+	  BufferedImage bufferedImage =
+			  new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+	  Graphics2D g2 = bufferedImage.createGraphics();
+	  g2.setColor(Color.GREEN);
+	  g2.fillRect(0, 0, 10, 10);
+	  g2.setColor(Color.BLACK);
+	  g2.drawLine(0, 0, 5, 5); // \
+	  g2.drawLine(0, 5, 5, 0); // /
+	  // paint with the texturing brush
+	  Rectangle2D rect = new Rectangle2D.Double(0, 0, 10, 10);
+	  g.setPaint(new TexturePaint(bufferedImage, rect));
+	  drawField(vertices, vertexCount, color);
+  }
+  
+  private void drawField(Vec2[] vertices, int vertexCount, Color3f color) {
+	  // inside
+	  Graphics2D g = getGraphics();
+	  int[] xInts = xIntsPool.get(vertexCount);
+	  int[] yInts = yIntsPool.get(vertexCount);
+
+	  for (int i = 0; i < vertexCount; i++) {
+		  getWorldToScreenToOut(vertices[i], temp);
+		  xInts[i] = (int) temp.x;
+		  yInts[i] = (int) temp.y;
+	  }
+
+	  g.fillPolygon(xInts, yInts, vertexCount);
+	  // outside
+	  drawPolygon(vertices, vertexCount, color);
   }
 
   @Override
