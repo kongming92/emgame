@@ -1548,7 +1548,7 @@ public class World {
 	private final Vec2Array tlvertices = new Vec2Array();
 
 	private void drawShape(Fixture fixture, Transform xf, Color3f color) {
-	    System.out.println("Fixture type: "+fixture.type);
+	    //System.out.println("Fixture type: "+fixture.type);
 	    if (fixture.type==1) {
 	    	color = new Color3f(.8f,0f,0f);
 	    } else if (fixture.type==-1) {

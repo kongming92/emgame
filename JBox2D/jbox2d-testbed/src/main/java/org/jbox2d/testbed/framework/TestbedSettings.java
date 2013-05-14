@@ -58,7 +58,7 @@ public class TestbedSettings {
   public static final String DrawHelp = "Help";
   public static final String DrawTree = "Dynamic Tree";
 
-  public boolean pause = false;
+  public boolean pause = true;
   public boolean singleStep = false;
 
   private ArrayList<TestbedSetting> settings;

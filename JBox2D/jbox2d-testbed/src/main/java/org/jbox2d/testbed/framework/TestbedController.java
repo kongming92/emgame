@@ -62,9 +62,13 @@ public class TestbedController implements Runnable {
   private final TestbedPanel panel;
   
   private UpdateBehavior updateBehavior;
-
+  
+  //boolean to tell whether user can still place charges or not
+  public boolean setupMode = true;
+  
   public TestbedController(TestbedModel argModel, TestbedPanel argPanel, UpdateBehavior behavior) {
     model = argModel;
+    model.controller=this;
     setFrameRate(DEFAULT_FPS);
     panel = argPanel;
     animator = new Thread(this, "Testbed");

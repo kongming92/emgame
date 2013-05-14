@@ -37,14 +37,14 @@ public class MagneticField extends Body {
 		//Vec2 v = getPosition().sub(b2.getPosition());
 		//now scale: q_1q_2v/|v|^3
 		if ((!(b2 instanceof Charge))||(!(contains(b2)))) {
-			System.out.println("No");
+			//System.out.println("No");
 			return new Vec2(0,0);
 		}
 		Vec2 v = b2.getLinearVelocity();
 		Vec2 v_perp = new Vec2(v.y,-v.x);
 		v_perp = v_perp.mul(bField);
 		//System.out.println("force: "+v);
-		System.out.println(v_perp);
+		//System.out.println(v_perp);
 		return v_perp;
 	}
 	
