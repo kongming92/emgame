@@ -279,6 +279,7 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
         playButton.setEnabled(true);
         controller.resetTest();
         controller.setupMode=true;
+        
       }
     });
     

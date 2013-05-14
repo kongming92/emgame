@@ -126,6 +126,63 @@ public class DebugDrawJ2D extends DebugDraw {
   private final static IntArray xIntsPool = new IntArray();
   private final static IntArray yIntsPool = new IntArray();
 
+  
+  /**
+   * Draws a grid of x's on top of the rectangle to represent a B-field
+   * going into the page.
+   * @param center
+   * @param radius
+   */
+  @Override
+  public void drawBFieldIn(Vec2[] vertices, int vertexCount, Color3f color) {
+    Graphics2D g = getGraphics();
+    BufferedImage bufferedImage =
+        new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bufferedImage.createGraphics();
+    g2.setColor(Color.GREEN);
+    g2.fillRect(0, 0, 10, 10);
+    g2.setColor(Color.BLACK);
+    g2.drawLine(0, 0, 5, 5); // \
+    g2.drawLine(0, 5, 5, 0); // /
+    // paint with the texturing brush
+    Rectangle2D rect = new Rectangle2D.Double(0, 0, 10, 10);
+    g.setPaint(new TexturePaint(bufferedImage, rect));
+    drawField(vertices, vertexCount, color);
+  }
+  
+  @Override
+  public void drawBFieldOut(Vec2[] vertices, int vertexCount, Color3f color) {
+    Graphics2D g = getGraphics();
+    BufferedImage bufferedImage =
+        new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bufferedImage.createGraphics();
+    g2.setColor(Color.GREEN);
+    g2.fillRect(0, 0, 10, 10);
+    g2.setColor(Color.BLACK);
+    g2.fillOval(0, 0, 3, 3);
+    // paint with the texturing brush
+    Rectangle2D rect = new Rectangle2D.Double(0, 0, 10, 10);
+    g.setPaint(new TexturePaint(bufferedImage, rect));
+    drawField(vertices, vertexCount, color);
+  }
+  
+  private void drawField(Vec2[] vertices, int vertexCount, Color3f color) {
+    // inside
+    Graphics2D g = getGraphics();
+    int[] xInts = xIntsPool.get(vertexCount);
+    int[] yInts = yIntsPool.get(vertexCount);
+
+    for (int i = 0; i < vertexCount; i++) {
+      getWorldToScreenToOut(vertices[i], temp);
+      xInts[i] = (int) temp.x;
+      yInts[i] = (int) temp.y;
+    }
+
+    g.fillPolygon(xInts, yInts, vertexCount);
+    // outside
+    drawPolygon(vertices, vertexCount, color);
+  }
+  
   @Override
   public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {
     // inside
@@ -165,61 +222,7 @@ public class DebugDrawJ2D extends DebugDraw {
 	  drawSegment(p1, p2, new Color3f(1, 1, 1));
   }
   
-  /**
-   * Draws a grid of x's on top of the rectangle to represent a B-field
-   * going into the page.
-   * @param center
-   * @param radius
-   */
-  @Override
-  public void drawBFieldIn(Vec2[] vertices, int vertexCount, Color3f color) {
-	  Graphics2D g = getGraphics();
-	  BufferedImage bufferedImage =
-			  new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
-	  Graphics2D g2 = bufferedImage.createGraphics();
-	  g2.setColor(Color.GREEN);
-	  g2.fillRect(0, 0, 10, 10);
-	  g2.setColor(Color.BLACK);
-	  g2.drawLine(0, 0, 5, 5); // \
-	  g2.drawLine(0, 5, 5, 0); // /
-	  // paint with the texturing brush
-	  Rectangle2D rect = new Rectangle2D.Double(0, 0, 10, 10);
-	  g.setPaint(new TexturePaint(bufferedImage, rect));
-	  drawField(vertices, vertexCount, color);
-  }
-  
-  @Override
-  public void drawBFieldOut(Vec2[] vertices, int vertexCount, Color3f color) {
-	  Graphics2D g = getGraphics();
-	  BufferedImage bufferedImage =
-			  new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
-	  Graphics2D g2 = bufferedImage.createGraphics();
-	  g2.setColor(Color.GREEN);
-	  g2.fillRect(0, 0, 10, 10);
-	  g2.setColor(Color.BLACK);
-	  g2.fillOval(0, 0, 3, 3);
-	  // paint with the texturing brush
-	  Rectangle2D rect = new Rectangle2D.Double(0, 0, 10, 10);
-	  g.setPaint(new TexturePaint(bufferedImage, rect));
-	  drawField(vertices, vertexCount, color);
-  }
-  
-  private void drawField(Vec2[] vertices, int vertexCount, Color3f color) {
-	  // inside
-	  Graphics2D g = getGraphics();
-	  int[] xInts = xIntsPool.get(vertexCount);
-	  int[] yInts = yIntsPool.get(vertexCount);
-
-	  for (int i = 0; i < vertexCount; i++) {
-		  getWorldToScreenToOut(vertices[i], temp);
-		  xInts[i] = (int) temp.x;
-		  yInts[i] = (int) temp.y;
-	  }
-
-	  g.fillPolygon(xInts, yInts, vertexCount);
-	  // outside
-	  drawPolygon(vertices, vertexCount, color);
-  }
+ 
 
   @Override
   public void drawString(float x, float y, String s, Color3f color) {
