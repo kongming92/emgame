@@ -49,6 +49,7 @@ public class TestbedModel {
   private float panelWidth;
   private int currTestIndex = -1;
   private TestbedTest runningTest;
+  TestbedController controller;
   
   public TestbedModel() {
   }

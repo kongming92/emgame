@@ -607,18 +607,13 @@ public abstract class TestbedTest
     if (settings.getSetting(TestbedSettings.DrawHelp).enabled) {
       debugDraw.drawString(5, m_textLine, "Help", color4);
       m_textLine += 15;
-      debugDraw.drawString(5, m_textLine, "Click and drag the left mouse button to move objects.",
+      debugDraw.drawString(5, m_textLine, "Click while holding q to drop positive charges.",
           Color3f.WHITE);
       m_textLine += 15;
 
       debugDraw.drawString(5, m_textLine,
-          "Click and drag the right mouse button to move the view.", Color3f.WHITE);
+          "Click while holding w to drop negative charges.", Color3f.WHITE);
       m_textLine += 15;
-      debugDraw.drawString(5, m_textLine, "Scroll to zoom in/out.", Color3f.WHITE);
-      m_textLine += 15;
-      debugDraw.drawString(5, m_textLine, "Press '[' or ']' to change tests, and 'r' to restart.",
-          Color3f.WHITE);
-      m_textLine += 20;
     }
 
     if (!textList.isEmpty()) {
@@ -668,22 +663,25 @@ public abstract class TestbedTest
       debugDraw.drawString(20, 200, "You Win!!!!!",color6);
       settings.pause=true;
       TestbedSidePanel.enableNextLevel();
-      TestbedSidePanel.disablePauseButton();
       
     }
     
   }
   
   public void queueQMouse(Vec2 p) { // ryan
+    if (model.controller.setupMode){
 	    synchronized (inputQueue) {
 	      inputQueue.addLast(new QueueItem(QueueItemType.QMouse, p));
 	    }
+    }
   }
   
   public void queueWMouse(Vec2 p) {
-	  synchronized (inputQueue) {
-		  inputQueue.addLast(new QueueItem(QueueItemType.WMouse, p));
-	  }
+    if (model.controller.setupMode){
+      synchronized (inputQueue) {
+        inputQueue.addLast(new QueueItem(QueueItemType.WMouse, p));
+      }
+    }
   }
 
   public void qMouse(Vec2 p) { //ryan
