@@ -74,6 +74,7 @@ import org.jbox2d.serialization.UnsupportedObjectException;
 import org.jbox2d.serialization.pb.PbDeserializer;
 import org.jbox2d.serialization.pb.PbSerializer;
 import org.jbox2d.testbed.framework.j2d.TestbedSidePanel;
+import org.jbox2d.testbed.framework.j2d.TestbedSidePanel.Counter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -724,14 +725,12 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
   public void queueQMouse(Vec2 p) { // ryan
 	    synchronized (inputQueue) {
 	      inputQueue.addLast(new QueueItem(QueueItemType.QMouse, p));
-	      model.posCounter.updateCount();
 	    }
   }
   
   public void queueWMouse(Vec2 p) {
       synchronized (inputQueue) {
         inputQueue.addLast(new QueueItem(QueueItemType.WMouse, p));
-        model.negCounter.updateCount();
       }
   }
 
@@ -775,11 +774,14 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	      m_world.destroyBody(charge);
 	      charge = null;
 	    }
-	    if ( c < 0 && model.controller.addV){
+	    
+	    if ( c == POSITIVE_CHARGE && Counter.POSITIVES.getCount() > 0) {
 	      createCharge(position, BodyType.STATIC, c);
+	      TestbedSidePanel.updateCounter(Counter.POSITIVES, Counter.POSITIVES.getCount() - 1);
 	    }
-	    else if ( c > 0 && model.controller.addQ){
+	    else if ( c == NEGATIVE_CHARGE && Counter.NEGATIVES.getCount() > 0){
 	      createCharge(position, BodyType.STATIC, c);
+	      TestbedSidePanel.updateCounter(Counter.NEGATIVES, Counter.NEGATIVES.getCount() - 1);
 	    }
 	    
 	  }

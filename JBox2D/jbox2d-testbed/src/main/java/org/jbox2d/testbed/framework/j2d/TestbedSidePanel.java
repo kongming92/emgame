@@ -294,13 +294,11 @@ public class TestbedSidePanel extends JPanel implements ChangeListener, ActionLi
 		  counterPanel.add(label);
 		  counter.setLabel(label);
 		  counter.updateLabel();
-		  if (counter.name=="Positives"){
-		    model.posCounter=counter;
-		    updateCounter(counter,5);
+		  if (counter == Counter.POSITIVES) {
+		    updateCounter(counter, 5);
 		  }
-		  if (counter.name=="Negatives"){
-		    model.negCounter=counter;
-		    updateCounter(counter,5);
+		  if (counter == Counter.NEGATIVES) {
+		    updateCounter(counter, 5);
 		  }
 	  }
   }
