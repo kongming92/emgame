@@ -116,13 +116,12 @@ public class TestList {
 
     model.addTest(new Level("levels/nemesis.txt"));
     model.addTest(new Level("levels/needle.txt"));
-    model.addTest(new Level("levels/arc.txt"));
+    model.addTest(new Level("levels/arc.txt"));   
         
     model.addTest(new Level("levels/capcitor.txt"));
         
     model.addTest(new Level("levels/evil.txt"));
     
-    model.addTest(new Level("levels/level3.txt"));
-    //model.addTest(new DragDrop());
+    model.addTest(new Level("levels/level3.txt"));    
   }
 }
