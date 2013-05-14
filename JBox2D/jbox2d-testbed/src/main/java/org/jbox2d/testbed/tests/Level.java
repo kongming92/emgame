@@ -25,7 +25,7 @@ import org.jbox2d.common.Color3f;
 
 public class Level extends TestbedTest {
 
-	private static final int B_STRENGTH = 30;
+	private static final int B_STRENGTH = 14;
 	private float xMin;
 	private float yMax;
 	private float r;
