@@ -103,9 +103,13 @@ public class TestList {
 //    model.addTest(new LiquidTest());
     
     model.addCategory("Charges");
-    model.addTest(new Level("jbox2d-testbed/levels/level1.txt"));    
-    model.addTest(new Level("jbox2d-testbed/levels/level2.txt"));
-    model.addTest(new Level("jbox2d-testbed/levels/level3.txt"));    
+    model.addTest(new Level("levels/trivial.txt"));    
+    model.addTest(new Level("levels/attraction.txt"));
+    model.addTest(new Level("levels/attraction2.txt"));
+    model.addTest(new Level("levels/repulsion1.txt")); 
+    model.addTest(new Level("levels/level1.txt"));    
+    model.addTest(new Level("levels/level2.txt"));
+    model.addTest(new Level("levels/level3.txt"));    
     model.addTest(new Level("levels/circle.txt"));
     //model.addTest(new DragDrop());
   }

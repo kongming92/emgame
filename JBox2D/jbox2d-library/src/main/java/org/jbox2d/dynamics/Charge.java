@@ -23,7 +23,7 @@ public class Charge extends Body {
 		if (v.equals(new Vec2(0,0)) || !(b2 instanceof Charge)) {
 			return new Vec2(0,0);
 		}
-		v = v.mul((float) (-(E_CONSTANT * charge * ((Charge) b2).charge)/Math.pow(v.length(),3)));
+		v = v.mul((float) (-(E_CONSTANT * World.SPEED * charge * ((Charge) b2).charge)/Math.pow(v.length(),3)));
 		//System.out.println("force: "+v);
 		return v;
 	}

@@ -65,37 +65,7 @@ public class Level extends TestbedTest {
 	}
 
 	private Charge createCharge(Vec2 position, BodyType type, float charge) {
-		//Make a circle
-		CircleShape c2 = new CircleShape();
-		c2.setRadius(r);
-		//Make a fixture
-		FixtureDef fd2 = new FixtureDef();   
-		//Put the circle in the fixture and set density
-		fd2.shape=c2;
-		fd2.density = DENSITY;
-		//Make the BodyDef, set its position, and set it as dynamic
-		BodyDef bd2 = new BodyDef();
-		bd2.position = position;
-		bd2.type = type;
-		boolean isPlayer=false;
-		if (type==BodyType.DYNAMIC) {
-			//then it's the player's charge
-			fd2.filter.categoryBits=0x0001;
-			fd2.filter.maskBits=0x0007;//can collide with walls (4), charges (2), self (1)
-			isPlayer=true;
-			
-		} else {
-			//it's static
-			fd2.filter.categoryBits=0x0002;
-			fd2.filter.maskBits=0x0001;//can only collide with player (1)
-		}
-		//now create a Body in the world, and put the bodydef and the fixturedef into it
-		Charge body2 = getWorld().createCharge(bd2);
-		//set the charge to be negative
-		body2.charge=charge;
-		body2.createFixture(fd2);
-		body2.isPlayer=isPlayer;
-		return body2;
+		return super.createCharge(position, type, charge, r, DENSITY);
 	}
 
 	private Charge createCharge(Vec2 position, BodyType type, float charge, Vec2 velocity) {
@@ -151,11 +121,11 @@ public class Level extends TestbedTest {
     
     //starting to make the shape
     PolygonShape poly=new PolygonShape();
-    Vec2 [] pointA = { new Vec2( 2f, 1.15f), new Vec2( -2, 1.15f),new Vec2(0,-2.3f)  };
+    Vec2 [] pointA = { new Vec2( 1f, .67f), new Vec2( -1, .67f),new Vec2(0,-1.15f)  };
     poly.set(pointA, 3);
     
     PolygonShape poly2=new PolygonShape();
-    Vec2 [] pointB={ new Vec2( 2f, -1.15f), new Vec2( -2, -1.15f),new Vec2(0,2.3f)  };
+    Vec2 [] pointB={ new Vec2( 1f, -.67f), new Vec2( -1, -.67f),new Vec2(0,1.15f)  };
     poly2.set(pointB, 3);
    
   

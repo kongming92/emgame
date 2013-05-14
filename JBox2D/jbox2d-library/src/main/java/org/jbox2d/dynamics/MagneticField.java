@@ -42,7 +42,7 @@ public class MagneticField extends Body {
 		}
 		Vec2 v = b2.getLinearVelocity();
 		Vec2 v_perp = new Vec2(v.y,-v.x);
-		v_perp = v_perp.mul(bField);
+		v_perp = v_perp.mul(bField*World.SPEED);
 		//System.out.println("force: "+v);
 		//System.out.println(v_perp);
 		return v_perp;

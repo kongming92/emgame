@@ -730,8 +730,7 @@ public abstract class TestbedTest
 	    createCharge(position, BodyType.STATIC, c);
 	  }
   
-	private Charge createCharge(Vec2 position, BodyType type, float charge) {
-		float r=1;
+    protected Charge createCharge(Vec2 position, BodyType type, float charge, float r, float density) {
 		//Make a circle
 		CircleShape c2 = new CircleShape();
 		c2.setRadius(r);
@@ -759,6 +758,11 @@ public abstract class TestbedTest
 		body2.charge=charge;
 		body2.createFixture(fd2);
 		return body2;
+    }
+  
+	private Charge createCharge(Vec2 position, BodyType type, float charge) {
+		return createCharge(position, type, charge, 1, 10);
+		
 	}
 
 
