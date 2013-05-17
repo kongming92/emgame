@@ -141,8 +141,8 @@ public abstract class TestbedTest
 
   private boolean savePending, loadPending, resetPending = false;
   
-  public static final float POSITIVE_CHARGE = 5.0f;
-  public static final float NEGATIVE_CHARGE = -5.0f;
+  public static final float POSITIVE_CHARGE = 1.0f;
+  public static final float NEGATIVE_CHARGE = -1.0f;
   
   public boolean sameLocationError = false;
 
@@ -845,8 +845,8 @@ private final Color3f color1 = new Color3f(.3f, .95f, .3f);
 	   */
 	  private Vec2 snapWorldPtToGrid(Vec2 worldPt) {
 		  Vec2 newPt = new Vec2(worldPt);
-		  newPt.x = xRes * Math.round(worldPt.x / (float)xRes);
-		  newPt.y = yRes * Math.round(worldPt.y / (float)yRes);
+		  newPt.x = 0.25f * xRes * Math.round(4*worldPt.x / (float)xRes);
+		  newPt.y = 0.25f * yRes * Math.round(4*worldPt.y / (float)yRes);
 		  return newPt;
 	  }
 

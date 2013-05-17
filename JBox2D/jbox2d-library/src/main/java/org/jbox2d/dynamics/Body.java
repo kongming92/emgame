@@ -49,7 +49,7 @@ public class Body {
 	public static final int e_activeFlag = 0x0020;
 	public static final int e_toiFlag = 0x0040;
 	
-	public static final float E_CONSTANT = 500;
+	public static final float E_CONSTANT = 2000.0f;
 
 	public BodyType m_type;
 

@@ -24,7 +24,6 @@ public class Charge extends Body {
 			return new Vec2(0,0);
 		}
 		v = v.mul((float) (-(E_CONSTANT * World.SPEED * charge * ((Charge) b2).charge)/Math.pow(v.length(),3)));
-		//System.out.println("force: "+v);
 		return v;
 	}
 
